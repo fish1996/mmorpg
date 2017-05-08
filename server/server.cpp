@@ -87,6 +87,6 @@ server::server()
     handler = new handleMsg(receiveQueue);
     sender = new sendMsg(sendQueue);
     
-    handler->run();
-	sender->run(); 
+    handler->start();
+	sender->start(); 
 }

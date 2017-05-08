@@ -5,6 +5,12 @@ handleMsg::handleMsg(BlockingQueue<char*>* q)
 {
 }
 
+void handleMsg::start() 
+{
+	thread = new std::thread(&run,this);
+	thread->detach();
+}
+
 void handleMsg::run()
 {
     int operation;

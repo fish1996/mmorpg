@@ -13,10 +13,12 @@ private:
         Length,
         Data,
     }
+    std::thread* thread;
     BlockingQueue<char*>* receiveQueue;
+    void run();
 public:
     handleMsg(BlockingQueue<char*>* q);
-    void run();
+    void start();
 };
 
 #endif // HANDLEMSG_H

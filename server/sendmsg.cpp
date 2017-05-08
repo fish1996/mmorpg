@@ -6,6 +6,12 @@ sendMsg::sendMsg(BlockingQueue<char*>* q)
     	
 }
 
+void sendMsg::start()
+{
+	thread = new std::thread(&run,this);
+	thread->detach();
+}
+
 void sendMsg::setConn(int c)
 {
 	conn = c;
