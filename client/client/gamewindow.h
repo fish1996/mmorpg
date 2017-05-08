@@ -1,4 +1,5 @@
-﻿#ifndef GAMEWINDOW_H
+﻿
+#ifndef GAMEWINDOW_H
 #define GAMEWINDOW_H
 
 #define GLUT_DISABLE_ATEXIT_HACK
@@ -7,7 +8,7 @@
 #include "gl/glu.h"
 #include "gl/glut.h"
 
-class gamewindow : public QGLWidget
+class GameWindow : public QGLWidget
 {
     Q_OBJECT
 private:
@@ -19,3 +20,4 @@ protected:
 };
 
 #endif // GAMEWINDOW_H
+

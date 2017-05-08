@@ -2,6 +2,7 @@
 #include "progressbar.h"
 #include "connectThread.h"
 #include "login.h"
+#include "gamewindow.h"
 
 #include <qDebug>
 engine::engine()
@@ -41,6 +42,12 @@ void engine::handleState(bool isConnected)
     updateState();
 }
 
+void engine::doChooseMap()
+{
+    gameWindow = new GameWindow();
+    gameWindow->show();
+}
+
 void engine::updateState()
 {
     switch(State){
@@ -57,7 +64,8 @@ void engine::updateState()
         doLogin();
         break;
     }
-    case CHOOSEROOM:{
+    case CHOOSEMAP:{
+        doChooseMap();
         break;
     }
     case CONNECTERR:{

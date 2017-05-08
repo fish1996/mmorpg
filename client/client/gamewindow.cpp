@@ -1,12 +1,13 @@
-﻿#include "gamewindow.h"
+﻿
+#include "gamewindow.h"
 
-void gamewindow::initializeGL()
+void GameWindow::initializeGL()
 {
     glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE);
     glClearColor(0,0,0,1);
 }
 
-void gamewindow::resizeGL(int width,int height)
+void GameWindow::resizeGL(int width,int height)
 {
     if (height == 0) {
         height = 1;
@@ -20,6 +21,6 @@ void gamewindow::resizeGL(int width,int height)
     glMatrixMode(GL_MODELVIEW);
 }
 
-void gamewindow::paintGL()
+void GameWindow::paintGL()
 {
 }
