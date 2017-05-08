@@ -7,7 +7,13 @@
 class handleMsg
 {
 private:
-    BlockingQueue<char*>* queue;
+    enum State{
+        Begin,
+        Instruction,
+        Length,
+        Data,
+    }
+    BlockingQueue<char*>* receiveQueue;
 public:
     handleMsg(BlockingQueue<char*>* q);
     void run();

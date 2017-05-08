@@ -60,6 +60,7 @@ void server::start()
     printf("waiting for connection\n");
     ///成功返回非负描述字，出错返回-1
     int conn = accept(server_sockfd, (struct sockaddr*)&client_addr, &length);
+    sender->setConn(conn);
     if(conn<0) {
         perror("connect error");
         exit(1);
@@ -69,6 +70,7 @@ void server::start()
     while(1) {
         memset(buffer,0,sizeof(buffer));
         int len = recv(conn, buffer, sizeof(buffer),0);
+        receiveQueue->Put(buffer);
         out.write(buffer,strlen(buffer) + 1);
         out.write("\n",1);
        // send(conn, buffer, len, 0);
@@ -79,5 +81,12 @@ void server::start()
 
 server::server()
 {
-    out.open("server.log");
+	receiveQueue = new BlockingQueue<char*>();
+	sendQueue = new BlockingQueue<char*>();
+    out = new ofstream("server.log");
+    handler = new handleMsg(receiveQueue);
+    sender = new sendMsg(sendQueue);
+    
+    handler->run();
+	sender->run(); 
 }
