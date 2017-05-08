@@ -71,8 +71,8 @@ void server::start()
         memset(buffer,0,sizeof(buffer));
         int len = recv(conn, buffer, sizeof(buffer),0);
         receiveQueue->Put(buffer);
-        out.write(buffer,strlen(buffer) + 1);
-        out.write("\n",1);
+        out->write(buffer,strlen(buffer) + 1);
+        out->write("\n",1);
        // send(conn, buffer, len, 0);
     }
     close(conn);

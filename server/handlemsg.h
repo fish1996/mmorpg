@@ -4,18 +4,24 @@
 #include "blockingqueue.h"
 #include <thread>
 
+enum State{
+    Begin,
+    Instruction,
+    Length,
+    Data,
+};
+
+struct message
+{
+    BlockingQueue<char*>* receiveQueue;
+};
+
 class handleMsg
 {
 private:
-    enum State{
-        Begin,
-        Instruction,
-        Length,
-        Data,
-    }
     std::thread* thread;
     BlockingQueue<char*>* receiveQueue;
-    void run();
+    friend void run(message msg);
 public:
     handleMsg(BlockingQueue<char*>* q);
     void start();

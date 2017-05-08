@@ -1,17 +1,23 @@
 #include "handlemsg.h"
+#include <string.h>
 #include <string>
+
 handleMsg::handleMsg(BlockingQueue<char*>* q)
     :receiveQueue(q)
 {
 }
 
+void run(message msg);
+
 void handleMsg::start() 
 {
-	thread = new std::thread(&run,this);
+    message msg;
+    msg.receiveQueue = receiveQueue;
+    thread = new std::thread(run,msg);
 	thread->detach();
 }
 
-void handleMsg::run()
+void run(message msg)
 {
     int operation;
     int length;
@@ -22,10 +28,9 @@ void handleMsg::run()
     std::string password;
 
     for(;;) {
-        char* msg = receiveQueue->Take();
-        for(int i = 0;i < strlen(msg); i++) {
-
-            unsigned char ch = (unsigned char)(msg[i] & 0x00ff);
+        char* data = msg.receiveQueue->Take();
+        for(int i = 0;i < strlen(data); i++) {
+            unsigned char ch = (unsigned char)(data[i] & 0x00ff);
             if(ch == 255 && state == Begin) {
                 state = Instruction;
             }
@@ -49,7 +54,7 @@ void handleMsg::run()
                     switch(operation) {
                     case 0:{
                         if(username == "fish1996" &&
-                                password="200224223") {
+                                password == "200224223") {
                             // 验证通过
                         }
                         break;
@@ -63,10 +68,10 @@ void handleMsg::run()
                         loginState = 1;
                     }
                     else if(loginState == 0) {
-                        username = username + ch;
+                        username = username + (char)ch;
                     }
                     else if(loginState == 1){
-                        password = password + ch;
+                        password = password + (char)ch;
                     }
                     break;
                 }
