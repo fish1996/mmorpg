@@ -12,6 +12,7 @@ void connectThread::run()
     emit(connectState(state));
     for(;;){
         char* msg = queue->Take();
+        printf("send = %s\n",msg);
         client->sendRequest(msg);
     }
 }

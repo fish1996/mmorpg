@@ -58,6 +58,7 @@ bool Client::connect2Host(const char* hostName)
 bool Client::sendRequest(char* message)
 {
     int r = send(clientSocket, message, strlen(message) + 1, 0);
+    delete[] message;
     if (r == SOCKET_ERROR) {
         qDebug()<<"request failed\n";
         return false;

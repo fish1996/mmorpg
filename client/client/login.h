@@ -14,7 +14,7 @@ class Login : public QWidget
     Q_OBJECT
 private:
     enum{HMAX = 3,
-         BEGINMARK = 255,};
+         BEGINMARK = 10,};
     QLabel* userName;
     QLabel* password;
     QLineEdit* userNameLine;
@@ -24,7 +24,7 @@ private:
     QHBoxLayout* hlayout[HMAX];
     QVBoxLayout* vlayout;
     BlockingQueue<char*>* queue;
-
+    char* toChar(QString str);
     void Layout();
 private slots:
     void doLogin();

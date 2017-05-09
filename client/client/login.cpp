@@ -4,7 +4,7 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QPushButton>
-
+#include <qDebug>
 Login::Login(BlockingQueue<char*>* q,QWidget *parent)
     : queue(q),QWidget(parent)
 {
@@ -40,23 +40,36 @@ void Login::Layout()
     setLayout(vlayout);
 }
 
+char* Login::toChar(QString str)
+{
+    char* ch;
+    QByteArray* ba = new QByteArray(str.toLatin1());
+    ch = ba->data();
+    return ch;
+}
+
 void Login::doLogin()
 {
     int count = 3;
-    int len = userNameLine->text().length() + password->text().length() + count + 1;
+    int len = userNameLine->text().size() + passwordLine->text().size()+ count + 2;
+    char* username = toChar(userNameLine->text());
+    char* password = toChar(passwordLine->text());
     char *msg = new char[len];
+    memset(msg,0,sizeof(msg));
     msg[0] = BEGINMARK;
-    msg[1] = len - 2;
+    msg[1] = (char)(len - 3);
     msg[2] = 1;
-    for(int i=0;i<userName->text().length();i++){
-        msg[count++] = userName->text().at(i).toLatin1();
+    for(int i=0;i<userNameLine->text().size();i++){
+        msg[count++] = username[i];
     }
-    msg[count++] = 128;
-    for(int i=0;i<password->text().length();i++){
-        msg[count++] = (unsigned char)password->text().at(i).toLatin1();
+    msg[count++] = ' ';
+    for(int i=0;i<passwordLine->text().size();i++){
+        msg[count++] = password[i];
     }
+
+//    printf("msg = %s password = %s name = %s\n",msg,password,username);
     queue->Put(msg);
-    delete[] msg;
+   // delete[] msg;
  }
 
 Login::~Login()
