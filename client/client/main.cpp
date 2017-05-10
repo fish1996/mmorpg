@@ -1,26 +1,188 @@
-Ôªø#include "engine.h"
-#include "tree.h"
+#define _CRT_SECURE_NO_WARNINGS        
 
-#include <QApplication>
-#include <iostream>
-#include <string>
+#include <stdlib.h>         
+#include <time.h>      
+#include"gl/glut.h"        
+#include "sceneManage.h"
+
+float cx, cz;
+float center[] = { 0, 0, 0 };
+float eye[] = { 0, 5, 10 };
+float tx, ty = 10, ax, ay = 10, mx, my, zoom = 0;
+bool isLine = false;
+bool isDown = false;
+sceneManage* scene;
+float step = 1;
+void reshape(int width, int height)
+{
+	if (height == 0) height = 1;
+	glViewport(0, 0, width, height);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	float whRatio = (GLfloat)width / (GLfloat)height;
+	gluPerspective(45, whRatio, 1, 500);
+	glMatrixMode(GL_MODELVIEW);
+}
+
+void idle()
+{
+	glutPostRedisplay();
+}
+
+void init(void)
+{
+	glClearColor(1.0, 0.0, 0.0, 0.0);
+	glShadeModel(GL_SMOOTH);
+	glEnable(GL_DEPTH_TEST);
+	glColor4f(1.0, 1.0, 1.0, 1.0f);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+	glEnable(GL_COLOR_MATERIAL);
+	glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
+
+	scene = new sceneManage();
+	scene->init(eye[0], eye[2]);
+}
+
+void redraw()
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClearColor(1,1,1, 1);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	gluLookAt(eye[0], eye[1], eye[2], center[0], center[1], center[2], 0, 1, 0);
+
+	if (isLine)glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	else glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	glPushMatrix();
+	glColor3f(0.2, 0.2, 0.2);
+	glRotatef(90, 1, 0, 0);
+	glRectd(-32, -32, 32, 32);
+	glPopMatrix();
+	scene->moveTo(cx, -cz);
+	glColor3f(0,0,0);
+	glPushMatrix();
+	glutSolidCube(3);
+	std::set<Object*> set = scene->getObj();
+	std::set<Object*>::iterator it;
+	int count = 0;
+	for (it = set.begin(); it != set.end();it++){
+		count++;
+		(*it)->draw();
+	}
+	//if(count!=0)printf("count = %d\n",count);
+	glPopMatrix();
+
+	glutSwapBuffers();
+}
+
+void myMouse(int button, int state, int x, int y)
+{
+	if (button == GLUT_LEFT_BUTTON) {
+		if (state == GLUT_DOWN) {
+			isDown = true;
+			mx = x;
+			my = y;
+		}
+		else if (state == GLUT_UP) {
+			isDown = false;
+		}
+	}
+	glutPostRedisplay();
+}
+
+void mouseMotion(int x, int y)
+{
+	if (isDown) {
+		ax += 1.0f*(y - my) / 10.0f;
+		ay += 1.0f*(x - mx) / 10.0f;
+		mx = x;
+		my = y;
+	}
+	glutPostRedisplay();
+}
+
+void myKeyboard(unsigned char key, int x, int y)
+{
+	switch (key)
+	{
+	case 'a': { //◊Û“∆ 
+				 
+				  cx -= step;
+				  eye[0] -= step;
+				  center[0] -= step;
+				  if (cx < -32){
+					  cx = -32;
+					  eye[0] = -32;
+					  center[0] = -32;
+				  }
+				  break;
+	}
+	case 'd': { //”““∆    
+				  cx += step;
+				  eye[0] += step;
+				  center[0] += step;
+				  if (cx > 32){
+					  cx = 32;
+					  eye[0] = 32;
+					  center[0] = 32;
+				  }
+				  break;
+	}
+	case 'w': { //…œ“∆    
+				  cz -= step;
+				  eye[2] -= step;
+				  center[2] -= step;
+				  if (cz < -32){
+					  cz = -32;
+					  eye[2] = -32;
+					  center[2] = -32;
+				  }
+				  break;
+	}
+	case 's': { //œ¬“∆    
+				  cz += step;
+				  eye[2] += step;
+				  center[2] += step;
+				  if (cz > 32){
+					  cz = 32;
+					  eye[2] = 32;
+					  center[2] = 32;
+				  }
+				  break;
+	}
+	case 'z': { //∫Û“∆    
+				  zoom += 1;
+				  break;
+	}
+	case 'c': { //«∞“∆    
+				  zoom -= 1;
+				  break;
+	}
+	case 'p': {
+				  // «–ªªªÊ÷∆ƒ£ Ω  
+				  if (isLine) {
+					  isLine = false;
+				  }
+				  else isLine = true;
+	}
+	}
+	//glutPostRedisplay();
+}
 
 int main(int argc, char *argv[])
 {
-    Object* obj1 = new Object(1);
-    Object* obj2 = new Object(2);
-    Object* obj3 = new Object(3);
-    Object* obj4 = new Object(4);
-    QApplication a(argc, argv);
-    quadtree t;
-
-    t.add(1,0,0,obj1);
-    t.add(2,1,2,obj2);
-    t.add(2,3,1,obj3);
-    t.add(3,4,0,obj4);
-    t.print();
-    engine w;
-
-    w.start();
-    return a.exec();
+	glutInit(&argc, argv);
+	glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE);
+	glutInitWindowSize(800, 600);
+	int windowHandle = glutCreateWindow("Simple GLUT App");
+	glutDisplayFunc(redraw);
+	glutReshapeFunc(reshape);
+	glutMouseFunc(myMouse);
+	glutMotionFunc(mouseMotion);
+	glutKeyboardFunc(myKeyboard);
+	glutIdleFunc(idle);
+	init();
+	glutMainLoop();
+	//system("pause");
+	return 0;
 }

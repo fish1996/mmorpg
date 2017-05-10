@@ -2,6 +2,9 @@
 class Object
 {
 public:
-	int i;
-	Object(int _i);
+	float radius;
+	float center_x;
+	float center_y;
+	Object(float _radius,float cx,float cy);
+	void draw();
 };

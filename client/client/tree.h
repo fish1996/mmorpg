@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <list>
 #include "object.h"
 
@@ -16,7 +16,7 @@ struct treeNode {
 	Box box;
 	treeNode* child[4];
 	std::list<Object*> List;
-	bool hasChild;  
+	bool hasChild;
 	treeNode();
 	void setBox(treeNode* parent, int i);
 };
@@ -29,7 +29,7 @@ private:
 	treeNode* head;
 public:
 	void print();
-	std::list<Object*> find(float x, float y,int layer = -1);
-	quadtree(float size,int l);
+	std::list<Object*> find(float x, float y, int layer = -1);
+	quadtree(float size, int l);
 	void add(int layer, int x, int y, Object* obj);
 };
