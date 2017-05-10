@@ -1,26 +1,35 @@
-#pragma once
+ï»¿#pragma once
+#include <list>
+#include "object.h"
 
-class Object
+struct Box
 {
-
-public:
-    int i;
-	Object(int _i);
+	float xmin;
+	float xmax;
+	float ymin;
+	float ymax;
+	Box();
+	Box(float _xmin, float _xmax, float _ymin, float _ymax);
 };
+
 struct treeNode {
+	Box box;
 	treeNode* child[4];
-	Object* object; //°üº¬µÄ¶ÔÏó
-	bool hasChild;   //ÊÇ·ñÓÐº¢×Ó
+	std::list<Object*> List;
+	bool hasChild;  
 	treeNode();
+	void setBox(treeNode* parent, int i);
 };
 
 class quadtree
 {
 private:
+	float blockSize;
+	int layer;
 	treeNode* head;
 public:
-    void find(float x,float y);
 	void print();
-	quadtree();
+	std::list<Object*> find(float x, float y,int layer = -1);
+	quadtree(float size,int l);
 	void add(int layer, int x, int y, Object* obj);
 };
