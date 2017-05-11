@@ -5,14 +5,16 @@
 #include"gl/glut.h"        
 #include "sceneManage.h"
 
-float cx, cz;
+float cx = 0, cz = -1;
 float center[] = { 0, 0, 0 };
-float eye[] = { 0, 5, 10 };
+float eye[] = { 0,100, 1 };
 float tx, ty = 10, ax, ay = 10, mx, my, zoom = 0;
 bool isLine = false;
 bool isDown = false;
+bool isDrawAll = false;
 sceneManage* scene;
 float step = 1;
+
 void reshape(int width, int height)
 {
 	if (height == 0) height = 1;
@@ -40,13 +42,13 @@ void init(void)
 	glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
 
 	scene = new sceneManage();
-	scene->init(eye[0], eye[2]);
+	scene->init(cx,-cz);
 }
 
 void redraw()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glClearColor(1,1,1, 1);
+	glClearColor(1, 1, 1, 1);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	gluLookAt(eye[0], eye[1], eye[2], center[0], center[1], center[2], 0, 1, 0);
@@ -54,24 +56,47 @@ void redraw()
 	if (isLine)glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	else glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	glPushMatrix();
+	glColor3f(0.3f, 0, 0);
+	glTranslatef(cx, 0.1f, cz);
+	glutSolidSphere(0.1f, 20, 10);
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(cx, 0.1, cz);
+	glColor3f(0, 0, 0);
+	glRotatef(90, 1, 0, 0);
+	glRectd(-2, -2, 2, 2);
+	glPopMatrix();
+
+	glPushMatrix();
 	glColor3f(0.2, 0.2, 0.2);
 	glRotatef(90, 1, 0, 0);
 	glRectd(-32, -32, 32, 32);
 	glPopMatrix();
-	scene->moveTo(cx, -cz);
-	glColor3f(0,0,0);
-	glPushMatrix();
-	glutSolidCube(3);
-	std::set<Object*> set = scene->getObj();
-	std::set<Object*>::iterator it;
-	int count = 0;
-	for (it = set.begin(); it != set.end();it++){
-		count++;
-		(*it)->draw();
-	}
-	//if(count!=0)printf("count = %d\n",count);
-	glPopMatrix();
 
+	if (isDrawAll) {
+		std::list<Object*>::iterator it;
+		std::list<Object*> list = scene->getAllObj();
+		printf("size = %d\n", list.size());
+		for (it = list.begin(); it != list.end(); it++) {
+			(*it)->draw();
+		}
+	}
+	else {
+		scene->moveTo(cx, -cz);
+		glColor3f(0, 0, 0);
+		glPushMatrix();
+		//glutSolidCube(3);
+		std::set<Object*> set = scene->getObj();
+		std::set<Object*>::iterator it;
+		int count = 0;
+		for (it = set.begin(); it != set.end(); it++) {
+			count++;
+			(*it)->draw();
+		}
+		//if(count!=0)printf("count = %d\n",count);
+		glPopMatrix();
+	}
 	glutSwapBuffers();
 }
 
@@ -103,67 +128,74 @@ void mouseMotion(int x, int y)
 
 void myKeyboard(unsigned char key, int x, int y)
 {
+//	printf("%d\n",key);
 	switch (key)
 	{
 	case 'a': { //左移 
-				 
-				  cx -= step;
-				  eye[0] -= step;
-				  center[0] -= step;
-				  if (cx < -32){
-					  cx = -32;
-					  eye[0] = -32;
-					  center[0] = -32;
-				  }
-				  break;
+		cx -= step;
+		eye[0] -= step;
+		center[0] -= step;
+		if (cx < -32) {
+			cx = -32;
+			eye[0] = -32;
+			center[0] = -32;
+		}
+		break;
 	}
 	case 'd': { //右移    
-				  cx += step;
-				  eye[0] += step;
-				  center[0] += step;
-				  if (cx > 32){
-					  cx = 32;
-					  eye[0] = 32;
-					  center[0] = 32;
-				  }
-				  break;
+		cx += step;
+		eye[0] += step;
+		center[0] += step;
+		if (cx > 32) {
+			cx = 32;
+			eye[0] = 32;
+			center[0] = 32;
+		}
+		break;
 	}
 	case 'w': { //上移    
-				  cz -= step;
-				  eye[2] -= step;
-				  center[2] -= step;
-				  if (cz < -32){
-					  cz = -32;
-					  eye[2] = -32;
-					  center[2] = -32;
-				  }
-				  break;
+		cz -= step;
+		eye[2] -= step;
+		center[2] -= step;
+		if (cz < -32) {
+			cz = -32;
+			eye[2] = -32;
+			center[2] = -32;
+		}
+		break;
 	}
 	case 's': { //下移    
-				  cz += step;
-				  eye[2] += step;
-				  center[2] += step;
-				  if (cz > 32){
-					  cz = 32;
-					  eye[2] = 32;
-					  center[2] = 32;
-				  }
-				  break;
+		cz += step;
+		eye[2] += step;
+		center[2] += step;
+		if (cz > 32) {
+			cz = 32;
+			eye[2] = 32;
+			center[2] = 32;
+		}
+		break;
 	}
 	case 'z': { //后移    
-				  zoom += 1;
-				  break;
+		zoom += 1;
+		break;
 	}
 	case 'c': { //前移    
-				  zoom -= 1;
-				  break;
+		zoom -= 1;
+		break;
 	}
 	case 'p': {
-				  // 切换绘制模式  
-				  if (isLine) {
-					  isLine = false;
-				  }
-				  else isLine = true;
+		// 切换绘制模式  
+		if (isLine) {
+			isLine = false;
+		}
+		else isLine = true;
+		break;
+	}
+	case 'm': {
+		if (isDrawAll) {
+			isDrawAll = false;
+		}
+		else isDrawAll = true;
 	}
 	}
 	//glutPostRedisplay();

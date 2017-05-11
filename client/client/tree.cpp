@@ -7,10 +7,11 @@
 
 Box::Box() {}
 Box::Box(float _xmin, float _xmax, float _ymin, float _ymax) :
-xmin(_xmin), xmax(_xmax), ymin(_ymin), ymax(_ymax)
+	xmin(_xmin), xmax(_xmax), ymin(_ymin), ymax(_ymax)
 {
 
 }
+
 
 
 treeNode::treeNode()
@@ -25,34 +26,39 @@ void treeNode::setBox(treeNode* parent, int i)
 {
 	switch (i) {
 	case 0: {
-				box.xmax = parent->box.xmin + (parent->box.xmax - parent->box.xmin) / 2;
-				box.xmin = parent->box.xmin;
-				box.ymax = parent->box.ymax;
-				box.ymin = parent->box.ymin + (parent->box.ymax - parent->box.ymin) / 2;
-				break;
+		box.xmax = parent->box.xmin + (parent->box.xmax - parent->box.xmin) / 2;
+		box.xmin = parent->box.xmin;
+		box.ymax = parent->box.ymax;
+		box.ymin = parent->box.ymin + (parent->box.ymax - parent->box.ymin) / 2;
+		break;
 	}
 	case 1: {
-				box.xmax = parent->box.xmin + (parent->box.xmax - parent->box.xmin) / 2;
-				box.xmin = parent->box.xmin;
-				box.ymax = parent->box.ymin + (parent->box.ymax - parent->box.ymin) / 2;
-				box.ymin = parent->box.ymin;
-				break;
+		box.xmax = parent->box.xmin + (parent->box.xmax - parent->box.xmin) / 2;
+		box.xmin = parent->box.xmin;
+		box.ymax = parent->box.ymin + (parent->box.ymax - parent->box.ymin) / 2;
+		box.ymin = parent->box.ymin;
+		break;
 	}
 	case 2: {
-				box.xmax = parent->box.xmax;
-				box.xmin = parent->box.xmin + (parent->box.xmax - parent->box.xmin) / 2;
-				box.ymax = parent->box.ymin + (parent->box.ymax - parent->box.ymin) / 2;
-				box.ymin = parent->box.ymin;
-				break;
+		box.xmax = parent->box.xmax;
+		box.xmin = parent->box.xmin + (parent->box.xmax - parent->box.xmin) / 2;
+		box.ymax = parent->box.ymin + (parent->box.ymax - parent->box.ymin) / 2;
+		box.ymin = parent->box.ymin;
+		break;
 	}
 	case 3: {
-				box.xmax = parent->box.xmax;
-				box.xmin = parent->box.xmin + (parent->box.xmax - parent->box.xmin) / 2;
-				box.ymax = parent->box.ymax;
-				box.ymin = parent->box.ymin + (parent->box.ymax - parent->box.ymin) / 2;
-				break;
+		box.xmax = parent->box.xmax;
+		box.xmin = parent->box.xmin + (parent->box.xmax - parent->box.xmin) / 2;
+		box.ymax = parent->box.ymax;
+		box.ymin = parent->box.ymin + (parent->box.ymax - parent->box.ymin) / 2;
+		break;
 	}
 	}
+}
+
+std::list<Object*> quadtree::findAll()
+{
+	return allObj;
 }
 
 quadtree::quadtree(float size, int l)
@@ -73,12 +79,12 @@ std::list<Object*> quadtree::find(float x, float y, int layer)
 	treeNode* parent = nullptr;
 	int count = 0;
 	while (node != nullptr) {
-	//	printf("count = %d\n", count);
+		//	printf("count = %d\n", count);
 		if (count == layer) {
 			break;
 		}
 		int index;
-	//	printf("%f %f\n", node->box.xmax - node->box.xmin, node->box.ymax - node->box.ymin);
+		//	printf("%f %f\n", node->box.xmax - node->box.xmin, node->box.ymax - node->box.ymin);
 		int i = 2 * (x + head->box.xmax) / (node->box.xmax - node->box.xmin);
 		i = i % 2;
 		int j = 2 * (y + head->box.ymax) / (node->box.ymax - node->box.ymin);
@@ -97,7 +103,7 @@ std::list<Object*> quadtree::find(float x, float y, int layer)
 		}
 		parent = node;
 		node = node->child[index];
-	//	printf("index = %d\n", index);
+		//	printf("index = %d\n", index);
 		count++;
 	}
 	return parent->List;
@@ -105,6 +111,7 @@ std::list<Object*> quadtree::find(float x, float y, int layer)
 
 void quadtree::add(int layer, int x, int y, Object* obj)
 {
+	allObj.push_back(obj);
 	int n = pow(2, layer);
 	int *index = new int[layer];
 	int half = n >> 1;

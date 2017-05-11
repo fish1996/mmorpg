@@ -1,10 +1,16 @@
 #pragma once
+struct vec {
+	float x;
+	float y;
+	float z;
+};
 class Object
 {
 public:
 	float radius;
 	float center_x;
 	float center_y;
-	Object(float _radius,float cx,float cy);
+	vec color;
+	Object(float _radius, float cx, float cy);
 	void draw();
 };

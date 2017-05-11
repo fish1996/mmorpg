@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <list>
 #include "object.h"
 
@@ -27,8 +27,10 @@ private:
 	float blockSize;
 	int layer;
 	treeNode* head;
+	std::list<Object*> allObj;
 public:
 	void print();
+	std::list<Object*> findAll();
 	std::list<Object*> find(float x, float y, int layer = -1);
 	quadtree(float size, int l);
 	void add(int layer, int x, int y, Object* obj);
