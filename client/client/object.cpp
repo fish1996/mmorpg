@@ -1,7 +1,8 @@
-#include "object.h"
-#include "gl/glut.h"
+﻿#include "object.h"
+
 #include <stdlib.h>
 #include <stdio.h>
+#include "gl/glut.h"
 Object::Object(float r, float cx, float cy) :radius(r), center_x(cx), center_y(cy)
 {
 	color.x = (1.0*(rand() % 100) / 100);

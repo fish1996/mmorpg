@@ -21,9 +21,10 @@ class handleMsg
 private:
     std::thread* thread;
     BlockingQueue<char*>* receiveQueue;
+    BlockingQueue<char*>* sendQueue;
     friend void run(message msg);
 public:
-    handleMsg(BlockingQueue<char*>* q);
+    handleMsg(BlockingQueue<char*>* sq,BlockingQueue<char*>* rq);
     void start();
 };
 

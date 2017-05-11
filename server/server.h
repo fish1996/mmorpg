@@ -8,7 +8,7 @@
 class server
 {
 private:
-    std::ofstream* out;
+    std::ofstream out;
     sendMsg* sender;
     handleMsg* handler;
     BlockingQueue<char*>* receiveQueue;

@@ -3,8 +3,8 @@
 #include <string.h>
 #include <sys/socket.h>
 
-sendMsg::sendMsg(BlockingQueue<char*>* q)
-    :sendQueue(q)
+sendMsg::sendMsg(BlockingQueue<char*>* sq,BlockingQueue<char*>* rq)
+    :sendQueue(sq),receiveQueue(rq)
 {
     	
 }

@@ -14,10 +14,11 @@ class sendMsg
 private:
 	int conn;
 	std::thread* thread;
-	BlockingQueue<char*>* sendQueue;
+    BlockingQueue<char*>* receiveQueue;
+    BlockingQueue<char*>* sendQueue;
     friend void run(Send::message msg);
 public:
-    sendMsg(BlockingQueue<char*>* q);
+    sendMsg(BlockingQueue<char*>* sq,BlockingQueue<char*>* rq);
     void setConn(int c);
     void start();
 };

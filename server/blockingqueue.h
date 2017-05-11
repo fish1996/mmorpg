@@ -1,7 +1,9 @@
+
 #ifndef BLOCKINGQUEUE_H
 #define BLOCKINGQUEUE_H
 #include <list>
 #include <mutex>
+#include <stdio.h>
 #include <condition_variable>
 #include <assert.h>
 template<typename T>
@@ -12,6 +14,7 @@ public:
 
     void Put (const T& task) {
         {
+
             std::lock_guard<std::mutex> lock (_mutex);
             _queue.push_back (task);
         }
@@ -24,7 +27,6 @@ public:
         assert (!_queue.empty ());
         T front (_queue.front ());
         _queue.pop_front ();
-
         return front;
     }
 

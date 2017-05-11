@@ -51,13 +51,13 @@ char* Login::toChar(QString str)
 void Login::doLogin()
 {
     int count = 3;
-    int len = userNameLine->text().size() + passwordLine->text().size()+ count + 2;
+    int len = userNameLine->text().size() + passwordLine->text().size()+ count + 1;
     char* username = toChar(userNameLine->text());
     char* password = toChar(passwordLine->text());
     char *msg = new char[len];
     memset(msg,0,sizeof(msg));
     msg[0] = BEGINMARK;
-    msg[1] = (char)(len - 3);
+    msg[1] = (char)(len - 2);
     msg[2] = 1;
     for(int i=0;i<userNameLine->text().size();i++){
         msg[count++] = username[i];

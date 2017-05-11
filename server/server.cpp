@@ -13,7 +13,7 @@
 #include <netdb.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-#define MYPORT  8887
+#define MYPORT  3389
 #define QUEUE   20
 #define BUFFER_SIZE 1024
 
@@ -68,11 +68,14 @@ void server::start()
     printf("is connected\n");
 
     while(1) {
+
         memset(buffer,0,sizeof(buffer));
         int len = recv(conn, buffer, sizeof(buffer),0);
-        receiveQueue->Put(buffer);
-        out->write(buffer,strlen(buffer) + 1);
-        out->write("\n",1);
+        char* data = new char[sizeof(buffer)];
+        strcpy(data,buffer);
+        receiveQueue->Put(data);
+        printf("%s\n",buffer);
+        if(len<=0)break;
        // send(conn, buffer, len, 0);
     }
     close(conn);
@@ -83,9 +86,10 @@ server::server()
 {
 	receiveQueue = new BlockingQueue<char*>();
 	sendQueue = new BlockingQueue<char*>();
-    out = new ofstream("server.log");
-    handler = new handleMsg(receiveQueue);
-    sender = new sendMsg(sendQueue);
+
+    handler = new handleMsg(sendQueue,receiveQueue);
+    sender = new sendMsg(sendQueue,receiveQueue);
+    out.open("server.log");
     
     handler->start();
 	sender->start(); 
