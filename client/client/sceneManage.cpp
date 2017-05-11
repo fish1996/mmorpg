@@ -49,8 +49,8 @@ void sceneManage::randBuildTree()
 	}
 	int num[6];
 	num[0] = 0; // 4
-	num[1] = 1; // 16
-	num[2] = 3; // 64
+	num[1] = 0; // 16
+	num[2] = 2; // 64
 	num[3] = 20; // 256
 	num[4] = 40; // 1024
 	num[5] = 200; // 4096
@@ -71,7 +71,7 @@ void sceneManage::randBuildTree()
 			//printf("h = %.1f\n", h);
 			//printf("r1 = %f r2 = %f\n", -32 + h + r2 *half, -32 + h + r1 *half);
 			//printf("h = %.0f r = %.0f cx = %.0f cy = %.0f ", h, half, -h + r2 *half, -h + r1 *half);
-			Object* obj = new Object(half, -32 + h + r2 *half, -32 + h + r1 *half);
+			Object* obj = new Object(half, -LENGTH / 2 * BLOCKSIZE + h + r2 *half, -LENGTH / 2 * BLOCKSIZE + h + r1 *half);
 			tree->add(k + 1, r1, r2, obj);
 
 			for (int k1 = r1 * half; k1 < (r1 + 1) * half; k1++) {
@@ -144,6 +144,8 @@ std::set<Object*>& sceneManage::getObj()
 
 void sceneManage::moveTo(float x, float y)
 {
+	x /= BLOCKSIZE;
+	y /= BLOCKSIZE;
 	if (x == cur_x && y == cur_y) {
 		return;
 	}
@@ -180,6 +182,7 @@ void sceneManage::moveTo(float x, float y)
 		updateSet(0, 7, 6);
 	}
 	list[8] = tree->find(x, y, CURLAYER);
+	removeSet(8);
 	updateSet(8);
 	cur_x = x;
 	cur_y = y;

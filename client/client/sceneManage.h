@@ -6,15 +6,17 @@
 
 class sceneManage
 {
-private:
-
+public:
 	enum {
 		MAX = 9,
 		SIZE = 3,
 		LAYER = 6,
 		CURLAYER = 5,
 		BLOCKSIZE = 1,
+		LENGTH = 64,
 	};
+private:
+
 	bool *isUsed;
 	quadtree* tree;
 	std::set<Object*> set;
@@ -31,6 +33,7 @@ private:
 	void randBuildTree();
 	void printMap();
 public:
+
 	std::list<Object*>& getAllObj();
 	void init(float x, float y);
 	std::set<Object*>& getObj();

@@ -7,7 +7,7 @@
 
 Box::Box() {}
 Box::Box(float _xmin, float _xmax, float _ymin, float _ymax) :
-	xmin(_xmin), xmax(_xmax), ymin(_ymin), ymax(_ymax)
+xmin(_xmin), xmax(_xmax), ymin(_ymin), ymax(_ymax)
 {
 
 }
@@ -26,32 +26,32 @@ void treeNode::setBox(treeNode* parent, int i)
 {
 	switch (i) {
 	case 0: {
-		box.xmax = parent->box.xmin + (parent->box.xmax - parent->box.xmin) / 2;
-		box.xmin = parent->box.xmin;
-		box.ymax = parent->box.ymax;
-		box.ymin = parent->box.ymin + (parent->box.ymax - parent->box.ymin) / 2;
-		break;
+				box.xmax = parent->box.xmin + (parent->box.xmax - parent->box.xmin) / 2;
+				box.xmin = parent->box.xmin;
+				box.ymax = parent->box.ymax;
+				box.ymin = parent->box.ymin + (parent->box.ymax - parent->box.ymin) / 2;
+				break;
 	}
 	case 1: {
-		box.xmax = parent->box.xmin + (parent->box.xmax - parent->box.xmin) / 2;
-		box.xmin = parent->box.xmin;
-		box.ymax = parent->box.ymin + (parent->box.ymax - parent->box.ymin) / 2;
-		box.ymin = parent->box.ymin;
-		break;
+				box.xmax = parent->box.xmin + (parent->box.xmax - parent->box.xmin) / 2;
+				box.xmin = parent->box.xmin;
+				box.ymax = parent->box.ymin + (parent->box.ymax - parent->box.ymin) / 2;
+				box.ymin = parent->box.ymin;
+				break;
 	}
 	case 2: {
-		box.xmax = parent->box.xmax;
-		box.xmin = parent->box.xmin + (parent->box.xmax - parent->box.xmin) / 2;
-		box.ymax = parent->box.ymin + (parent->box.ymax - parent->box.ymin) / 2;
-		box.ymin = parent->box.ymin;
-		break;
+				box.xmax = parent->box.xmax;
+				box.xmin = parent->box.xmin + (parent->box.xmax - parent->box.xmin) / 2;
+				box.ymax = parent->box.ymin + (parent->box.ymax - parent->box.ymin) / 2;
+				box.ymin = parent->box.ymin;
+				break;
 	}
 	case 3: {
-		box.xmax = parent->box.xmax;
-		box.xmin = parent->box.xmin + (parent->box.xmax - parent->box.xmin) / 2;
-		box.ymax = parent->box.ymax;
-		box.ymin = parent->box.ymin + (parent->box.ymax - parent->box.ymin) / 2;
-		break;
+				box.xmax = parent->box.xmax;
+				box.xmin = parent->box.xmin + (parent->box.xmax - parent->box.xmin) / 2;
+				box.ymax = parent->box.ymax;
+				box.ymin = parent->box.ymin + (parent->box.ymax - parent->box.ymin) / 2;
+				break;
 	}
 	}
 }
