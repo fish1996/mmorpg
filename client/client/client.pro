@@ -21,7 +21,8 @@ SOURCES += main.cpp\
     progressbar.cpp \
     connectThread.cpp \
     tree.cpp \
-    object.cpp
+    object.cpp \
+    receiveThread.cpp
 
 HEADERS  += login.h \
     client.h \
@@ -33,7 +34,8 @@ HEADERS  += login.h \
     connectThread.h \
     blockingQueue.h \
     tree.h \
-    object.h
+    object.h \
+    receiveThread.h
 
 RESOURCES += \
     img.qrc

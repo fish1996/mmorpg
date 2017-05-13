@@ -59,11 +59,16 @@ void run(message msg)
                     }
                     if(count == length - 2){
                         state = Begin;
-                        std::cout <<"username = " <<username <<" "<<password;
+
                         if(username == "fish1996" &&
                                 password == "200224223") {
-                            printf("correct\n");
-                            // 验证通过
+
+                            char* sendData = new char[4];
+                            sendData[0] = 10;
+                            sendData[1] = 1;
+                            sendData[2] = 20;
+                            sendData[3] = 0;
+                            msg.sendQueue->Put(sendData);
                             continue;
                         }
                     }
@@ -81,6 +86,7 @@ void handleMsg::start()
 {
     message msg;
     msg.receiveQueue = receiveQueue;
+    msg.sendQueue = sendQueue;
     thread = new std::thread(run,msg);
     printf("new thread\n");
     //thread->detach();

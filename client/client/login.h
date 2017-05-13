@@ -2,7 +2,8 @@
 #define LOGIN_H
 
 #include <QWidget>
-#include "blockingQueue.h"
+
+#include "client.h"
 class QLabel;
 class QLineEdit;
 class QVBoxLayout;
@@ -23,13 +24,13 @@ private:
     QPushButton* registerBtn;
     QHBoxLayout* hlayout[HMAX];
     QVBoxLayout* vlayout;
-    BlockingQueue<char*>* queue;
+    Client* client;
     char* toChar(QString str);
     void Layout();
 private slots:
     void doLogin();
 public:
-    Login(BlockingQueue<char*>* c,QWidget *parent = 0);
+    Login(Client* c,QWidget *parent = 0);
     ~Login();
 };
 

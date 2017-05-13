@@ -5,8 +5,8 @@
 #include <QHBoxLayout>
 #include <QPushButton>
 #include <qDebug>
-Login::Login(BlockingQueue<char*>* q,QWidget *parent)
-    : queue(q),QWidget(parent)
+Login::Login(Client* c,QWidget *parent)
+    : client(c),QWidget(parent)
 {
     Layout();
 }
@@ -68,7 +68,7 @@ void Login::doLogin()
     }
 
 //    printf("msg = %s password = %s name = %s\n",msg,password,username);
-    queue->Put(msg);
+    client->sendMsg(msg);
    // delete[] msg;
  }
 

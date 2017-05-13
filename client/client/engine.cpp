@@ -1,13 +1,14 @@
 ﻿#include "engine.h"
 #include "progressbar.h"
-#include "connectThread.h"
 #include "login.h"
 #include "gamewindow.h"
 
 #include <qDebug>
 engine::engine()
 {
-    queue = new BlockingQueue<char*>();
+    client = new Client();
+    connect(client,SIGNAL(connected(bool)),this,SLOT(handleState(bool)));
+    connect(client,SIGNAL(checked(bool)),this,SLOT(checkState(bool)));
 }
 
 void engine::start()
@@ -16,9 +17,21 @@ void engine::start()
     updateState();
 }
 
+void engine::checkState(bool isRight)
+{
+    if(isRight){
+        login->close();
+        State = CHOOSEMAP;
+        updateState();
+    }
+    else {
+
+    }
+}
+
 void engine::doLogin()
 {
-    login = new Login(queue);
+    login = new Login(client);
     login->show();
 }
 
@@ -26,9 +39,6 @@ bool engine::doConnect()
 {
     bar = new progressbar();
     bar->show();
-    cThread = new connectThread(queue);
-    connect(cThread,SIGNAL(connectState(bool)),this,SLOT(handleState(bool)));
-    cThread->start();
     return true;
 }
 

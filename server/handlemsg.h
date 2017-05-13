@@ -14,6 +14,7 @@ enum State{
 struct message
 {
     BlockingQueue<char*>* receiveQueue;
+    BlockingQueue<char*>* sendQueue;
 };
 
 class handleMsg

@@ -8,6 +8,8 @@
 class server
 {
 private:
+    int server_sockfd;
+    int conn;
     std::ofstream out;
     sendMsg* sender;
     handleMsg* handler;

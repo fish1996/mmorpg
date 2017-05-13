@@ -5,6 +5,7 @@
 #include <QLabel>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+
 progressbar::progressbar(QWidget* parent):
     QWidget(parent)
 {

@@ -22,7 +22,29 @@ Client::Client()
         WSACleanup();
         printf("Invalid Winsock version!\n");
     }
+
+    sendQueue = new BlockingQueue<char*>();
+    receiveQueue = new BlockingQueue<char*>();
+    conThread = new connectThread(this,sendQueue);
+    recvThread = new receiveThread(this,receiveQueue);
+    conThread->start();
+
     isConnect = false;
+    connect(conThread,SIGNAL(connectState(bool)),this,SLOT(connectState(bool)));
+    connect(recvThread,SIGNAL(checkState(bool)),this,SLOT(checkState(bool)));
+}
+
+void Client::connectState(bool is)
+{
+    if(is){
+         recvThread->start();
+    }
+    emit(connected(is));
+}
+
+void Client::checkState(bool is)
+{
+    emit(checked(is));
 }
 
 bool Client::connect2Host(const char* hostName)
@@ -43,7 +65,7 @@ bool Client::connect2Host(const char* hostName)
     serverChannel.sin_port = htons(SERVER_PORT);//服务器端口
 
                                                 //建立连接
-    serverSocket = connect(clientSocket, (sockaddr*)&serverChannel, sizeof(serverChannel));
+    serverSocket = ::connect(clientSocket, (sockaddr*)&serverChannel, sizeof(serverChannel));
 
     if (serverSocket < 0) {
         qDebug()<<serverSocket<<"cannot connect to the host\n";
@@ -53,6 +75,11 @@ bool Client::connect2Host(const char* hostName)
         qDebug()<<"successfully connect to the host\n";
         return true;
     }
+}
+
+void Client::sendMsg(char* msg)
+{
+    sendQueue->Put(msg);
 }
 
 bool Client::sendRequest(char* message)

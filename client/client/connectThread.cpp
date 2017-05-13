@@ -1,9 +1,9 @@
 ﻿#include <qDebug>
 #include "connectThread.h"
-
-connectThread::connectThread(BlockingQueue<char*>* q) : queue(q)
+#include "Client.h"
+connectThread::connectThread(Client* c,BlockingQueue<char*>* q) : client(c),queue(q)
 {
-    client = new Client();
+
 }
 
 void connectThread::run()

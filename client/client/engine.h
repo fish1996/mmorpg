@@ -4,7 +4,6 @@
 #include <QObject>
 class Client;
 class progressbar;
-class connectThread;
 class GameWindow;
 class Login;
 class engine : QObject
@@ -18,9 +17,8 @@ private:
         QUIT,        // 退出
         CONNECTERR,  // 连接服务器失败
     }State;
-    BlockingQueue<char*>* queue;
+    Client* client;
     progressbar* bar;
-    connectThread* cThread;
     GameWindow* gameWindow;
     Login* login;
 
@@ -32,6 +30,7 @@ public:
     void start();
     engine();
 private slots:
+    void checkState(bool isRight);
     void handleState(bool isConnected);
 };
 

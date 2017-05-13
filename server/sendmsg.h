@@ -12,7 +12,7 @@ namespace Send{
 class sendMsg
 {
 private:
-	int conn;
+    Send::message msg;
 	std::thread* thread;
     BlockingQueue<char*>* receiveQueue;
     BlockingQueue<char*>* sendQueue;

@@ -3,9 +3,8 @@
 #define CONNECTTHREAD_H
 
 #include <QThread>
-#include "Client.h"
 #include"BlockingQueue.h"
-
+class Client;
 class connectThread : public QThread
 {
     Q_OBJECT
@@ -13,7 +12,7 @@ private:
     Client* client;
     BlockingQueue<char*>* queue;
 public:
-    connectThread(BlockingQueue<char*>* q);
+    connectThread(Client* c,BlockingQueue<char*>* q);
 protected:
     void run();
 signals:

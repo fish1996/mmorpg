@@ -30,7 +30,7 @@ using namespace std;
 void server::start()
 {
     ///定义sockfd
-    int server_sockfd = socket(AF_INET,SOCK_STREAM, 0);
+    server_sockfd = socket(AF_INET,SOCK_STREAM, 0);
 
     ///定义sockaddr_in
     struct sockaddr_in server_sockaddr;
@@ -59,7 +59,8 @@ void server::start()
 
     printf("waiting for connection\n");
     ///成功返回非负描述字，出错返回-1
-    int conn = accept(server_sockfd, (struct sockaddr*)&client_addr, &length);
+    conn = accept(server_sockfd, (struct sockaddr*)&client_addr, &length);
+    printf("server conn = %d\n",conn);
     sender->setConn(conn);
     if(conn<0) {
         perror("connect error");
@@ -79,6 +80,7 @@ void server::start()
        // send(conn, buffer, len, 0);
     }
     close(conn);
+
     close(server_sockfd);
 }
 
@@ -91,6 +93,8 @@ server::server()
     sender = new sendMsg(sendQueue,receiveQueue);
     out.open("server.log");
     
+
     handler->start();
 	sender->start(); 
+
 }
