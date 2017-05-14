@@ -1,5 +1,16 @@
 <RCC>
     <qresource prefix="/">
         <file>image/wait.gif</file>
+        <file>image/3.bmp</file>
+        <file>image/FloatingIsland.png</file>
+        <file>image/WalkWay1.png</file>
+        <file>image/WalkWay2.png</file>
+        <file>image/WalkWayEndLeft.png</file>
+        <file>image/WalkWayEndRight.png</file>
+        <file>image/i1.png</file>
+        <file>image/Cloud1.png</file>
+        <file>image/Sky.png</file>
+        <file>image/Water.jpg</file>
+        <file>image/Plant2.png</file>
     </qresource>
 </RCC>

@@ -71,6 +71,15 @@ void run(message msg)
                             msg.sendQueue->Put(sendData);
                             continue;
                         }
+                        else {
+                            char* sendData = new char[4];
+                            sendData[0] = 10;
+                            sendData[1] = 1;
+                            sendData[2] = 21;
+                            sendData[3] = 0;
+                            msg.sendQueue->Put(sendData);
+                            continue;
+                        }
                     }
                     break;
                 }

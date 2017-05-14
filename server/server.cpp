@@ -59,28 +59,28 @@ void server::start()
 
     printf("waiting for connection\n");
     ///成功返回非负描述字，出错返回-1
-    conn = accept(server_sockfd, (struct sockaddr*)&client_addr, &length);
-    printf("server conn = %d\n",conn);
-    sender->setConn(conn);
-    if(conn<0) {
-        perror("connect error");
-        exit(1);
+    while(1){
+        conn = accept(server_sockfd, (struct sockaddr*)&client_addr, &length);
+        printf("server conn = %d\n",conn);
+        sender->setConn(conn);
+        if(conn<0) {
+            perror("connect error");
+            exit(1);
+        }
+        printf("is connected\n");
+
+        while(1) {
+            memset(buffer,0,sizeof(buffer));
+            int len = recv(conn, buffer, sizeof(buffer),0);
+            char* data = new char[sizeof(buffer)];
+            strcpy(data,buffer);
+            receiveQueue->Put(data);
+            printf("%s\n",buffer);
+            if(len<=0)break;
+           // send(conn, buffer, len, 0);
+        }
+        close(conn);
     }
-    printf("is connected\n");
-
-    while(1) {
-
-        memset(buffer,0,sizeof(buffer));
-        int len = recv(conn, buffer, sizeof(buffer),0);
-        char* data = new char[sizeof(buffer)];
-        strcpy(data,buffer);
-        receiveQueue->Put(data);
-        printf("%s\n",buffer);
-        if(len<=0)break;
-       // send(conn, buffer, len, 0);
-    }
-    close(conn);
-
     close(server_sockfd);
 }
 

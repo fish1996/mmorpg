@@ -1,6 +1,7 @@
-#include "tree.h"
+﻿
 #include <math.h>
 #include <queue>
+#include "tree.h"
 //#include <QTextStream>
 //static QTextStream cout(stdout, QIODevice::WriteOnly);
 

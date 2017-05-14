@@ -15,27 +15,25 @@ SOURCES += main.cpp\
         login.cpp \
     client.cpp \
     gamewindow.cpp \
-    sprite.cpp \
     engine.cpp \
-    data.cpp \
     progressbar.cpp \
     connectThread.cpp \
     tree.cpp \
     object.cpp \
-    receiveThread.cpp
+    receiveThread.cpp \
+    texture.cpp
 
 HEADERS  += login.h \
     client.h \
     gamewindow.h \
-    Sprite.h \
     engine.h \
-    data.h \
     progressbar.h \
     connectThread.h \
     blockingQueue.h \
     tree.h \
     object.h \
-    receiveThread.h
+    receiveThread.h \
+    texture.h
 
 RESOURCES += \
     img.qrc
