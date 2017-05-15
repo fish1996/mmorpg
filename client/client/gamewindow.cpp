@@ -143,9 +143,10 @@ void Sprite::moveBack()
     }
 }
 
-mainWindow::mainWindow(int width,QWidget* p)
+mainWindow::mainWindow(int width,playerMsg* msg,QWidget* p)
     :QWidget(p)
 {
+    playermsg = msg;
     pWidth = width;
     movex = 0;
 
@@ -296,15 +297,15 @@ void mainWindow::paintEvent(QPaintEvent *e)
     }
     paint.drawPixmap(-50,600,300,150,*img[4]);
     paint.setPen(QColor(220,220,220));
-    paint.drawText(1.0*sprite[0]->posx,1.0*sprite[0]->posy - 15,"fish1996");
+    paint.drawText(1.0*sprite[0]->posx,1.0*sprite[0]->posy - 15,playermsg->username);
     paint.drawPixmap(1.0*sprite[0]->posx,1.0*sprite[0]->posy,50,50,*sprite[0]->cur);
     paint.drawPixmap(30,HEIGHT-300,200,200,*img[8]);
 }
 
-GameWindow::GameWindow(QWidget* parent)
+GameWindow::GameWindow(playerMsg* msg,QWidget* parent)
     :QWidget(parent){
     resize(WIDTH,HEIGHT);
-    window = new mainWindow(WIDTH,this);
+    window = new mainWindow(WIDTH,msg,this);
 }
 
 void GameWindow::paintEvent(QPaintEvent *)

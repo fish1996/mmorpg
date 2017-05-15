@@ -20,6 +20,7 @@ void engine::start()
 void engine::checkState(bool isRight)
 {
     if(isRight){
+        playermsg = login->playermsg;
         login->close();
         State = CHOOSEMAP;
         updateState();
@@ -54,7 +55,7 @@ void engine::handleState(bool isConnected)
 
 void engine::doChooseMap()
 {
-    gameWindow = new GameWindow();
+    gameWindow = new GameWindow(playermsg);
     gameWindow->show();
 }
 

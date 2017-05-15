@@ -20,8 +20,7 @@ SOURCES += main.cpp\
     connectThread.cpp \
     tree.cpp \
     object.cpp \
-    receiveThread.cpp \
-    texture.cpp
+    receiveThread.cpp
 
 HEADERS  += login.h \
     client.h \
@@ -33,7 +32,7 @@ HEADERS  += login.h \
     tree.h \
     object.h \
     receiveThread.h \
-    texture.h
+    playerMsg.h
 
 RESOURCES += \
     img.qrc

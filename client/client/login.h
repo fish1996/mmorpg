@@ -3,6 +3,7 @@
 
 #include <QWidget>
 
+#include "playerMsg.h"
 #include "client.h"
 class QLabel;
 class QLineEdit;
@@ -24,12 +25,14 @@ private:
     QPushButton* registerBtn;
     QHBoxLayout* hlayout[HMAX];
     QVBoxLayout* vlayout;
+
     Client* client;
     char* toChar(QString str);
     void Layout();
 private slots:
     void doLogin();
 public:
+    playerMsg* playermsg;
     Login(Client* c,QWidget *parent = 0);
     ~Login();
 };

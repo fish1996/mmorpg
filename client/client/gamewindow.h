@@ -7,9 +7,7 @@
 #include <QPixmap>
 #include <QTimer>
 #include <QSet>
-#include "texture.h"
-#include "gl/gl.h"
-#include "gl/glu.h"
+#include "playerMsg.h"
 
 class Sprite{
 public :
@@ -76,6 +74,7 @@ private:
     QSet<int>key;
     QTimer* timer;
     QTimer* jumpTimer;
+    playerMsg* playermsg;
     int pWidth;
     QPixmap* img[IMGNUM];
     Sprite* sprite[NUM];
@@ -87,7 +86,7 @@ public:
     void keyPressEvent(QKeyEvent *);
     void keyReleaseEvent(QKeyEvent *);
 public:
-    mainWindow(int width,QWidget* parent = 0);
+    mainWindow(int width,playerMsg* msg,QWidget* parent = 0);
     void loadImg();
 private slots:
     void updateJump();
@@ -105,7 +104,7 @@ private:
     };
     mainWindow* window;
 public:
-    GameWindow(QWidget* parent = 0);
+    GameWindow(playerMsg* msg,QWidget* parent = 0);
 protected:
     void paintEvent(QPaintEvent *);
     void keyPressEvent(QKeyEvent *);

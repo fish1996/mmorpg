@@ -36,13 +36,13 @@ void receiveThread::run()
                     instruction = buffer[i];
                     switch(instruction){
                     case 20:{
-                        qDebug()<<"right";
+                      //  qDebug()<<"right";
                         emit(checkState(true));
                         State = DATA;
                         continue;
                     }
                     case 21:{
-                        qDebug()<<"error";
+                      //  qDebug()<<"error";
                         emit(checkState(false));
                         State = DATA;
                         continue;
@@ -52,8 +52,6 @@ void receiveThread::run()
                     State = DATA;
                 }
                 else if(State == DATA) {
-
-
                     if(count == length - 1){
                         State = START;
                         continue;

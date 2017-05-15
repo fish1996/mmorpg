@@ -13,6 +13,7 @@ Login::Login(Client* c,QWidget *parent)
 
 void Login::Layout()
 {
+    playermsg = new playerMsg();
     userName = new QLabel(QStringLiteral("用户名"));
     password = new QLabel(QStringLiteral("密码"));;
     userNameLine = new QLineEdit();
@@ -54,6 +55,7 @@ void Login::doLogin()
     int len = userNameLine->text().size() + passwordLine->text().size()+ count + 1;
     char* username = toChar(userNameLine->text());
     char* password = toChar(passwordLine->text());
+    playermsg->username = userNameLine->text();
     char *msg = new char[len];
     memset(msg,0,sizeof(msg));
     msg[0] = BEGINMARK;
@@ -66,7 +68,7 @@ void Login::doLogin()
     for(int i=0;i<passwordLine->text().size();i++){
         msg[count++] = password[i];
     }
-
+   // msg[count] = 0;
 //    printf("msg = %s password = %s name = %s\n",msg,password,username);
     client->sendMsg(msg);
    // delete[] msg;

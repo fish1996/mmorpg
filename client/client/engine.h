@@ -1,6 +1,7 @@
 ﻿#ifndef ENGINE_H
 #define ENGINE_H
 #include "blockingQueue.h"
+#include "playerMsg.h"
 #include <QObject>
 class Client;
 class progressbar;
@@ -21,6 +22,7 @@ private:
     progressbar* bar;
     GameWindow* gameWindow;
     Login* login;
+    playerMsg* playermsg;
 
     bool doConnect();
     void doLogin();
