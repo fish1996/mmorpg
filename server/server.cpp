@@ -13,9 +13,7 @@
 #include <netdb.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-#define MYPORT  3389
-#define QUEUE   20
-#define BUFFER_SIZE 1024
+
 
 #define SERVER_NAME "@server_socket"
 /*
@@ -68,7 +66,6 @@ void server::start()
             exit(1);
         }
         printf("is connected\n");
-
         while(1) {
             memset(buffer,0,sizeof(buffer));
             int len = recv(conn, buffer, sizeof(buffer),0);

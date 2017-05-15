@@ -2,7 +2,7 @@
 #include "progressbar.h"
 #include "login.h"
 #include "gamewindow.h"
-
+#include <QMessageBox>
 #include <qDebug>
 engine::engine()
 {
@@ -25,7 +25,7 @@ void engine::checkState(bool isRight)
         updateState();
     }
     else {
-
+        QMessageBox::critical(NULL, "Error", QStringLiteral("账号密码错误"), QMessageBox::Yes,0);
     }
 }
 

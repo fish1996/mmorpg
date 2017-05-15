@@ -36,7 +36,14 @@ void receiveThread::run()
                     instruction = buffer[i];
                     switch(instruction){
                     case 20:{
+                        qDebug()<<"right";
                         emit(checkState(true));
+                        State = DATA;
+                        continue;
+                    }
+                    case 21:{
+                        qDebug()<<"error";
+                        emit(checkState(false));
                         State = DATA;
                         continue;
                     }

@@ -61,22 +61,28 @@ void run(message msg)
                         state = Begin;
 
                         if(username == "fish1996" &&
-                                password == "200224223") {
-
-                            char* sendData = new char[4];
+                                password == "200224223"||
+                                username == "miaomiaomiao"&&
+                                password == "123"||
+                                username == "wangwangwang"&&
+                                password =="123") {
+                            printf("ch=%d\n",ch);
+                            char* sendData = new char[5];
                             sendData[0] = 10;
                             sendData[1] = 1;
                             sendData[2] = 20;
-                            sendData[3] = 0;
+                            sendData[3] = ch;
+                            sendData[4] = 0;
                             msg.sendQueue->Put(sendData);
                             continue;
                         }
                         else {
-                            char* sendData = new char[4];
+                            char* sendData = new char[5];
                             sendData[0] = 10;
                             sendData[1] = 1;
                             sendData[2] = 21;
-                            sendData[3] = 0;
+                            sendData[3] = ch;
+                            sendData[4] = 0;
                             msg.sendQueue->Put(sendData);
                             continue;
                         }

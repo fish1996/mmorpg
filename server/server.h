@@ -8,6 +8,11 @@
 class server
 {
 private:
+    enum{
+        BUFFER_SIZE = 1024,
+        MYPORT = 12345,
+        QUEUE  = 20,
+    };
     int server_sockfd;
     int conn;
     std::ofstream out;
