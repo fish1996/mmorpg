@@ -1,4 +1,4 @@
-#include "server.h"
+﻿#include "server.h"
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <stdio.h>
@@ -81,17 +81,28 @@ void server::start()
     close(server_sockfd);
 }
 
+void broadCast(Timer::message msg)
+{
+    for(;;){
+
+        sleep(1);
+    }
+}
+
 server::server()
 {
-	receiveQueue = new BlockingQueue<char*>();
-	sendQueue = new BlockingQueue<char*>();
+    receiveQueue = new BlockingQueue<char*>();
+    sendQueue = new BlockingQueue<char*>();
 
     handler = new handleMsg(sendQueue,receiveQueue);
     sender = new sendMsg(sendQueue,receiveQueue);
+    Timer::message msg;
+    msg.sendQueue = sendQueue;
+    broadcastThread = new std::thread(broadCast,msg);
     out.open("server.log");
-    
+
 
     handler->start();
-	sender->start(); 
+    sender->start();
 
 }

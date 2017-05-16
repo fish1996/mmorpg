@@ -1,4 +1,4 @@
-#include "blockingqueue.h"
+﻿#include "blockingqueue.h"
 #include <thread>
 
 namespace Send{

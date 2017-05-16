@@ -1,4 +1,4 @@
-#ifndef HANDLEMSG_H
+﻿#ifndef HANDLEMSG_H
 #define HANDLEMSG_H
 
 #include "blockingqueue.h"
