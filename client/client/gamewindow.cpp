@@ -6,6 +6,7 @@
 
 void Sprite::load(QPixmap* img)
 {
+    qDebug()<<"load";
     posx = 0;
     posy = 400;
     int width = 1.0*img->width()/col;
@@ -13,16 +14,19 @@ void Sprite::load(QPixmap* img)
     for(int i=0;i<12;i++){
         s[i] = new QPixmap();
     }
+    int offw = (index%4)*3*width;
+    int offh = 4*height*(index>=4);
     for(int i=0;i<4;i++){
         for(int j=0;j<3;j++){
-            *s[i*3+j] = img->copy(j*width,i*height,width,height);
+            *s[i*3+j] = img->copy(j*width+offw,offh+i*height,width,height);
         }
     }
     cur = s[0];
 }
 
-Sprite::Sprite()
+Sprite::Sprite(int i)
 {
+    index = i;
     isScrollLeft = false;
     isScrollRight = false;
     frontindex = frontbegin;
@@ -195,8 +199,9 @@ void mainWindow::updateState()
 
 void mainWindow::loadImg()
 {
+    qDebug()<<"load2";
     for(int i=0;i<NUM;i++){
-        sprite[i] = new Sprite();
+        sprite[i] = new Sprite(playermsg->index);
     }
     sprite[0]->setMoveX(&movex);
     for(int i=0;i<IMGNUM;i++){
@@ -212,7 +217,7 @@ void mainWindow::loadImg()
     img[7]->load(":/image/Water.jpg");
     img[8]->load(":/image/Plant2.png");
     sprite[0]->load(img[0]);
-
+    delete img[0];
 }
 
 void mainWindow::keyPressEvent(QKeyEvent *e)
@@ -290,7 +295,7 @@ void mainWindow::paintEvent(QPaintEvent *e)
     paint.drawPixmap(500,400,150,150,*img[3]);
     paint.drawPixmap(300,300,100,100,*img[3]);
     paint.drawPixmap(600,350,100,100,*img[3]);
-     paint.drawPixmap(600,350,100,100,*img[3]);
+    paint.drawPixmap(600,350,100,100,*img[3]);
     for(int i=10;i>=0;i--){
         if(i==1)paint.drawPixmap(30 + i*225,HEIGHT-310,300,300,*img[1]);
         else paint.drawPixmap(30 + i*225,HEIGHT -310,300,300,*img[2]);

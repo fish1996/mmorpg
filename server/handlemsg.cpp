@@ -1,3 +1,4 @@
+
 #include "handlemsg.h"
 #include <string.h>
 #include <string>
@@ -21,9 +22,11 @@ void run(message msg)
     std::ofstream out("handle.log");
     for(;;) {
         char* data = msg.receiveQueue->Take();
-        printf("data = %s\n",data);
+       // printf("data = %s\n",data);
+        printf("total length = %d\n",strlen(data));
         for(int i = 0;i < strlen(data); i++) {
             char ch = data[i];
+            printf("ch=%d ",ch);
             if(ch == 10 && state == Begin) {
                 printf("begin\n");
                 state = Length;
@@ -51,22 +54,11 @@ void run(message msg)
                     if(ch == ' '){
                         loginState = 1;
                     }
-                    else if(loginState == 0) {
-                        username = username + ch;
-                    }
-                    else if(loginState == 1){
-                        password = password + ch;
-                    }
-                    if(count == length - 2){
+                    else if(i==strlen(data)-1){
                         state = Begin;
 
-                        if(username == "fish1996" &&
-                                password == "200224223"||
-                                username == "miaomiaomiao"&&
-                                password == "123"||
-                                username == "wangwangwang"&&
-                                password =="123") {
-                            printf("ch=%d\n",ch);
+                        if(username==password) {
+                            printf("here ch=%d\n",ch);
                             char* sendData = new char[5];
                             sendData[0] = 10;
                             sendData[1] = 1;
@@ -87,6 +79,12 @@ void run(message msg)
                             continue;
                         }
                     }
+                    else if(loginState == 0) {
+                        username = username + ch;
+                    }
+                    else if(loginState == 1){
+                        password = password + ch;
+                    }
                     break;
                 }
                 }
@@ -97,7 +95,7 @@ void run(message msg)
     }
 }
 
-void handleMsg::start() 
+void handleMsg::start()
 {
     message msg;
     msg.receiveQueue = receiveQueue;

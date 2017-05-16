@@ -2,6 +2,7 @@
 #define ENGINE_H
 #include "blockingQueue.h"
 #include "playerMsg.h"
+#include "chooseRole.h"
 #include <QObject>
 class Client;
 class progressbar;
@@ -20,6 +21,7 @@ private:
     }State;
     Client* client;
     progressbar* bar;
+    chooseRole* chooserole;
     GameWindow* gameWindow;
     Login* login;
     playerMsg* playermsg;
@@ -32,6 +34,7 @@ public:
     void start();
     engine();
 private slots:
+    void choose(int index);
     void checkState(bool isRight);
     void handleState(bool isConnected);
 };

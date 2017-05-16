@@ -20,7 +20,8 @@ SOURCES += main.cpp\
     connectThread.cpp \
     tree.cpp \
     object.cpp \
-    receiveThread.cpp
+    receiveThread.cpp \
+    chooseRole.cpp
 
 HEADERS  += login.h \
     client.h \
@@ -32,7 +33,8 @@ HEADERS  += login.h \
     tree.h \
     object.h \
     receiveThread.h \
-    playerMsg.h
+    playerMsg.h \
+    chooseRole.h
 
 RESOURCES += \
     img.qrc

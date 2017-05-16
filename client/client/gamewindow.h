@@ -30,6 +30,7 @@ public :
         Front,
         Back,
     }dir;
+    int index;
     void setMoveX(int*);
     bool isScrollRight;
     bool isScrollLeft;
@@ -39,7 +40,7 @@ public :
     float vx = 3.0f;
     float vy = -5.0f;
     int count = 0;
-    Sprite();
+    Sprite(int);
     int frontindex;
     int rightindex;
     int backindex;

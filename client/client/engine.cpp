@@ -55,6 +55,14 @@ void engine::handleState(bool isConnected)
 
 void engine::doChooseMap()
 {
+    chooserole = new chooseRole();
+    chooserole->show();
+    connect(chooserole,SIGNAL(choose(int)),this,SLOT(choose(int)));
+}
+
+void engine::choose(int index){
+    playermsg->index = index;
+    chooserole->close();
     gameWindow = new GameWindow(playermsg);
     gameWindow->show();
 }
