@@ -6,7 +6,9 @@
 #include <QGLWidget>
 #include <QPixmap>
 #include <QTimer>
-#include <QSet>
+#include <QMap>
+#include <QVector>
+#include "client.h"
 #include "playerMsg.h"
 
 class Sprite{
@@ -75,23 +77,28 @@ private:
     QSet<int>key;
     QTimer* timer;
     QTimer* jumpTimer;
+    QTimer* sender;
     playerMsg* playermsg;
     int pWidth;
     QPixmap* img[IMGNUM];
-    Sprite* sprite[NUM];
+    Sprite* sprite;
+    QMap<QString,Sprite*>map;
+    Client* client;
     bool pressFlag;
     bool isJump;
     void updateMove(int dir);
+    char* toChar(QString str);
 public:
     void paintEvent(QPaintEvent *);
     void keyPressEvent(QKeyEvent *);
     void keyReleaseEvent(QKeyEvent *);
 public:
-    mainWindow(int width,playerMsg* msg,QWidget* parent = 0);
+    mainWindow(int width,Client* client,playerMsg* msg,QWidget* parent = 0);
     void loadImg();
 private slots:
     void updateJump();
     void updateState();
+    void sendPlayerMsg();
 };
 
 
@@ -105,7 +112,7 @@ private:
     };
     mainWindow* window;
 public:
-    GameWindow(playerMsg* msg,QWidget* parent = 0);
+    GameWindow(Client* client,playerMsg* msg,QWidget* parent = 0);
 protected:
     void paintEvent(QPaintEvent *);
     void keyPressEvent(QKeyEvent *);

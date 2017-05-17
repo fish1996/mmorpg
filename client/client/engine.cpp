@@ -63,7 +63,7 @@ void engine::doChooseMap()
 void engine::choose(int index){
     playermsg->index = index;
     chooserole->close();
-    gameWindow = new GameWindow(playermsg);
+    gameWindow = new GameWindow(client,playermsg);
     gameWindow->show();
 }
 

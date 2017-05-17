@@ -23,7 +23,6 @@ void receiveThread::run()
             continue;
         }
         else {
-            qDebug()<<strlen(buffer);
             for(int i=0;i<strlen(buffer);i++){
                 if(State == START && buffer[i] == 10) {
                     State = LENGTH;
@@ -36,22 +35,31 @@ void receiveThread::run()
                     instruction = buffer[i];
                     switch(instruction){
                     case 20:{
-                      //  qDebug()<<"right";
                         emit(checkState(true));
                         State = DATA;
                         continue;
                     }
                     case 21:{
-                      //  qDebug()<<"error";
                         emit(checkState(false));
                         State = DATA;
                         continue;
+                    }
+                    case 22:{
+                        State = DATA;
+                        break;
                     }
                     }
                     count = 0;
                     State = DATA;
                 }
                 else if(State == DATA) {
+                    switch(instruction){
+                    case 22:{
+                        //
+                        break;
+                    }
+                    }
+
                     if(count == length - 1){
                         State = START;
                         continue;

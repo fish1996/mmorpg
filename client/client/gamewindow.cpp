@@ -147,30 +147,62 @@ void Sprite::moveBack()
     }
 }
 
-mainWindow::mainWindow(int width,playerMsg* msg,QWidget* p)
+mainWindow::mainWindow(int width,Client* c,playerMsg* msg,QWidget* p)
     :QWidget(p)
 {
     playermsg = msg;
     pWidth = width;
     movex = 0;
+    client = c;
 
     resize(WIDTH,HEIGHT);
     pressFlag = false;
     isJump = false;
     timer = new QTimer();
     jumpTimer = new QTimer();
+    sender = new QTimer();
     connect(timer,SIGNAL(timeout()),this,SLOT(updateState()));
     connect(jumpTimer,SIGNAL(timeout()),this,SLOT(updateJump()));
+    conenct(sender,SIGNAL(timeout()),this,SLOT(sendPlayerMsg()));
+    sender->start(200);
     loadImg();
+}
+
+char* mainWindow::toChar(QString str)
+{
+    char* ch;
+    QByteArray* ba = new QByteArray(str.toLatin1());
+    ch = ba->data();
+    return ch;
+}
+
+void mainWindow::sendPlayerMsg()
+{
+    char* msg = new char[10 + playermsg->username.size()];
+    char* username = toChar(playermsg->username);
+    msg[0] = 10;
+    msg[1] = 7 + playermsg->username.size();//length
+    msg[2] = 2;
+    msg[3] = sprite->posx << 8;//坐标x
+    msg[4] = (sprite->posx & 0x00ff);
+    msg[5] = sprite->posy << 8;
+    msg[6] = (sprite->posy & 0x00ff);
+    msg[7] = sprite->dir;
+    msg[8] = playermsg->index;
+    for(int i=0;i<playermsg->username.size();i++){
+        msg[9+i] = username[i];
+    }
+    msg[9+playermsg->username.size()] = 0;
+    client->sendMsg(msg);
 }
 
 void mainWindow::updateJump()
 {
-    sprite[0]->jump();
-    if(sprite[0]->posy>=HEIGHT - 200){
+    sprite->jump();
+    if(sprite->posy>=HEIGHT - 200){
         isJump = false;
         jumpTimer->stop();
-        sprite[0]->stopJump();
+        sprite->stopJump();
     }
     update();
 }
@@ -181,16 +213,16 @@ void mainWindow::updateState()
     for(it=key.begin();it!=key.end();it++){
         switch(*it){
         case Qt::Key_Right :
-            sprite[0]->moveRight();
+            sprite->moveRight();
             break ;
         case Qt::Key_Up :
-            sprite[0]->moveBack();
+            sprite->moveBack();
             break ;
         case Qt::Key_Left :
-            sprite[0]->moveLeft();
+            sprite->moveLeft();
             break ;
         case Qt::Key_Down:
-            sprite[0]->moveFront();
+            sprite->moveFront();
             break ;
         }
     }
@@ -200,10 +232,8 @@ void mainWindow::updateState()
 void mainWindow::loadImg()
 {
     qDebug()<<"load2";
-    for(int i=0;i<NUM;i++){
-        sprite[i] = new Sprite(playermsg->index);
-    }
-    sprite[0]->setMoveX(&movex);
+    sprite = new Sprite(playermsg->index);
+    sprite->setMoveX(&movex);
     for(int i=0;i<IMGNUM;i++){
         img[i] = new QPixmap();
     }
@@ -216,7 +246,7 @@ void mainWindow::loadImg()
     img[6]->load(":/image/Sky.png");
     img[7]->load(":/image/Water.jpg");
     img[8]->load(":/image/Plant2.png");
-    sprite[0]->load(img[0]);
+    sprite->load(img[0]);
     delete img[0];
 }
 
@@ -231,7 +261,7 @@ void mainWindow::keyPressEvent(QKeyEvent *e)
     if(Key==Qt::Key_Space){
         qDebug()<<"press space";
         jumpTimer->start(20);
-        sprite[0]->startJump();
+        sprite->startJump();
         isJump = true;
     }
     else if(Key == Qt::Key_Right||
@@ -264,10 +294,10 @@ void mainWindow::keyReleaseEvent(QKeyEvent *e)
 void mainWindow::updateMove(int dir)
 {
     static int count = 0;
-    if(count == sprite[0]->FRAMENUM){
+    if(count == sprite->FRAMENUM){
         count = 0;
-        if(dir==0)movex -= sprite[0]->step;
-        else movex += sprite[0]->step;
+        if(dir==0)movex -= sprite->step;
+        else movex += sprite->step;
     }
     count++;
 }
@@ -276,17 +306,17 @@ void mainWindow::paintEvent(QPaintEvent *e)
 {
     move(movex,0);
 
-    if(sprite[0]->dir==sprite[0]->Right &&sprite[0]->posx + movex>3.0*pWidth/4){
-        sprite[0]->isScrollRight = true;
+    if(sprite->dir==sprite->Right &&sprite->posx + movex>3.0*pWidth/4){
+        sprite->isScrollRight = true;
     }
     else{
-        sprite[0]->isScrollRight = false;
+        sprite->isScrollRight = false;
     }
-    if(movex < 0 && sprite[0]->dir==sprite[0]->Left && sprite[0]->posx + movex<1.0*pWidth/4){
-        sprite[0]->isScrollLeft = true;
+    if(movex < 0 && sprite->dir==sprite->Left && sprite->posx + movex<1.0*pWidth/4){
+        sprite->isScrollLeft = true;
     }
     else{
-        sprite[0]->isScrollLeft = false;
+        sprite->isScrollLeft = false;
     }
     QPainter paint(this);
     paint.drawPixmap(0,0,WIDTH,700,*img[6]);
@@ -302,15 +332,15 @@ void mainWindow::paintEvent(QPaintEvent *e)
     }
     paint.drawPixmap(-50,600,300,150,*img[4]);
     paint.setPen(QColor(220,220,220));
-    paint.drawText(1.0*sprite[0]->posx,1.0*sprite[0]->posy - 15,playermsg->username);
-    paint.drawPixmap(1.0*sprite[0]->posx,1.0*sprite[0]->posy,50,50,*sprite[0]->cur);
+    paint.drawText(1.0*sprite->posx,1.0*sprite->posy - 15,playermsg->username);
+    paint.drawPixmap(1.0*sprite->posx,1.0*sprite->posy,50,50,*sprite->cur);
     paint.drawPixmap(30,HEIGHT-300,200,200,*img[8]);
 }
 
-GameWindow::GameWindow(playerMsg* msg,QWidget* parent)
+GameWindow::GameWindow(Client* client,playerMsg* msg,QWidget* parent)
     :QWidget(parent){
     resize(WIDTH,HEIGHT);
-    window = new mainWindow(WIDTH,msg,this);
+    window = new mainWindow(WIDTH,client,msg,this);
 }
 
 void GameWindow::paintEvent(QPaintEvent *)
