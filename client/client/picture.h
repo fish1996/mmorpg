@@ -1,6 +1,7 @@
-#ifndef PICTURE_H
+﻿#ifndef PICTURE_H
 #define PICTURE_H
 #include <QPixmap>
+
 class picture{
 public:
     QPixmap* image[96];

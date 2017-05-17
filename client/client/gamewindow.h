@@ -89,6 +89,7 @@ private:
     bool isJump;
     void updateMove(int dir);
     char* toChar(QString str);
+    QByteArray* ba;
 public:
     void paintEvent(QPaintEvent *);
     void keyPressEvent(QKeyEvent *);

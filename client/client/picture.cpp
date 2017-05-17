@@ -1,5 +1,6 @@
 ﻿#include "picture.h"
 #include <qDebug>
+#include <QPainter>
 picture::picture(QPixmap* img)
 {
     int width = 1.0*img->width()/12;
@@ -8,8 +9,8 @@ picture::picture(QPixmap* img)
         for(int j=0;j<12;j++){
           //  qDebug()<<i<<j;
             image[12*i+j] = new QPixmap();
-
-            *image[i*12+j]=img->copy(i*width,j*height,width,height);
+            *image[i*12+j]=img->copy(j*width,i*height,width,height);
         }
     }
 }
+

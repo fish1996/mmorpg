@@ -164,7 +164,7 @@ mainWindow::mainWindow(int width,Client* c,playerMsg* msg,QWidget* p)
     connect(timer,SIGNAL(timeout()),this,SLOT(updateState()));
     connect(jumpTimer,SIGNAL(timeout()),this,SLOT(updateJump()));
     connect(sender,SIGNAL(timeout()),this,SLOT(sendPlayerMsg()));
-    sender->start(500);
+    sender->start(300);
     qDebug()<<"before load";
     loadImg();
     qDebug()<<"after load";
@@ -173,7 +173,7 @@ mainWindow::mainWindow(int width,Client* c,playerMsg* msg,QWidget* p)
 char* mainWindow::toChar(QString str)
 {
     char* ch;
-    QByteArray* ba = new QByteArray(str.toLatin1());
+    ba = new QByteArray(str.toLatin1());
     ch = ba->data();
     return ch;
 }
@@ -208,13 +208,15 @@ void mainWindow::sendPlayerMsg()
         col += sprite->backindex%3;
         break;
     }
-    qDebug()<<"posx="<<sprite->posx<<"posy="<<sprite->posy<<"before";
+    //qDebug()<<"posx="<<sprite->posx<<"posy="<<sprite->posy<<"before";
     msg[7] = 12*row + col + 1;
     for(int i=0;i<playermsg->username.size();i++){
         msg[8+i] = username[i];
     }
+    delete ba;
     msg[8+playermsg->username.size()] = 0;
     client->sendMsg(msg);
+    update();
 }
 
 void mainWindow::updateJump()
@@ -289,7 +291,7 @@ void mainWindow::keyPressEvent(QKeyEvent *e)
             Key == Qt::Key_Down){
         key.insert(e->key());
         if(!pressFlag){
-            timer->start(20);
+            timer->start(30);
             pressFlag = true;
         }
         update();
@@ -357,6 +359,7 @@ void mainWindow::paintEvent(QPaintEvent *e)
         if(client->allplayer->map.contains(*it)){
              QMap<QString,player>::iterator itr = client->allplayer->map.find(*it); //找到特定的“键-值”对
              paint.drawPixmap((*itr).posx,(*itr).posy,50,50,*(pic->image[(*itr).index]));
+             paint.drawText((*itr).posx,(*itr).posy-15,*it);
         }
 
     }

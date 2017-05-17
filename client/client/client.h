@@ -21,9 +21,10 @@ private:
 
     bool isConnect;
     connectThread* conThread;
-    receiveThread* recvThread;
+
 
 public:
+    receiveThread* recvThread;
     handlemsg* handleThread;
     BlockingQueue<char*>* sendQueue;
     BlockingQueue<char*>* receiveQueue;

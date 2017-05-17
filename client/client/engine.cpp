@@ -70,8 +70,10 @@ void engine::doChooseMap()
 void engine::choose(int index){
     playermsg->index = index;
     chooserole->close();
-    client->handleThread->start();
+
     gameWindow = new GameWindow(client,playermsg);
+    client->handleThread->start();
+    //client->recvThread->start();
     gameWindow->show();
 }
 

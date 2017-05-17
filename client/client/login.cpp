@@ -69,6 +69,10 @@ void Login::doLogin()
         msg[count++] = password[i];
     }
     msg[count] = 0;
+  //  delete username;
+  //  delete password;
+   // username = nullptr;
+   // password = nullptr;
     client->sendMsg(msg);
  }
 

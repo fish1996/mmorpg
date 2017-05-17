@@ -25,7 +25,7 @@ void handlemsg::run()
         p.posx = (((msg[0]&0x00ff)-1)<<8)+ ((msg[1]&0x00ff)-1);
         p.posy = (((msg[2]&0x00ff)-1)<<8)+ ((msg[3]&0x00ff)-1);
 
-        p.index = msg[4];
+        p.index = msg[4] - 1;
         qDebug()<<"posx="<<p.posx<<"posy="<<p.posy<<"index="<<p.index;
         for(int i=0;i<strlen(msg)-5;i++){
             username = username + msg[i+5];

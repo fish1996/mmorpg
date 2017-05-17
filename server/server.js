@@ -93,18 +93,18 @@ javaClient.on('data', function (data) {
         else if (state == 1) {
             state = 2;
             length = data[i];
-          //  console.log('length='+length);
+
             i++;
         }
         else if (state == 2) {
             if(data[i] == 20 || data[i] == 21) {
                 state = 3;
                 i += length;
-                console.log('to state 3');
+           
             }
             else{
                 state = 0;
-                console.log('to state 0');
+     
                 i += length + 1;
             }
         }
@@ -117,11 +117,8 @@ javaClient.on('data', function (data) {
             var s = socket.getValue(Id);
             if(s!=null){
                 s.write(msg);
-             //   console.log('isSend');
             }
-            else{
-            //    console.log('noSend');
-            }
+
             flag = true;
         }
     }
@@ -144,32 +141,23 @@ javaClient.on('error', function (err) {
 gatewayServer.on('connection', function (gatewaySocket) {
     id++;
     var thisid = id;
-    var time = sd.format(new Date(), 'YYYY-MM-DD HH:mm');
-    fs.appendFile("gateway.js.log", time + ' ' + gatewaySocket.remoteAddress + ':' + gatewaySocket.remotePort + " isconnected\n");
+   
     socket.add(id,gatewaySocket);
 
     gatewaySocket.on('data', function (data) {
-        var time = sd.format(new Date(), 'YYYY-MM-DD HH:mm');
-        fs.appendFile("gateway.js.log", time + 'receive\n');
         var msg = new Buffer(data.length+1);
         for(var i=0;i<data.length;i++)msg[i] = data[i];
         msg[data.length-1] = id;
         msg[data.length] = 0x00;
-        //console.log('len='+data.length);
-        //console.log('id='+ msg[data.length-1]);
         javaClient.write(msg);
     });
 
     gatewaySocket.on('close', function (data) {
           socket.remove(thisid);
           console.log('user'+thisid+'leave the game');
-     //   var time = sd.format(new Date(), 'YYYY-MM-DD HH:mm');
-     //   fs.appendFile("gateway.js.log",time + 'The socket with gateway is closed\n');
     });
 
     gatewaySocket.on('error', function (err) {
-       // var time = sd.format(new Date(), 'YYYY-MM-DD HH:mm');
-       // fs.appendFile("gateway.js.log", time + ' ' + err + '\n');
         gatewaySocket.destroy();
     });
 });
