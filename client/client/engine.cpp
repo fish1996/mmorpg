@@ -23,6 +23,7 @@ void engine::checkState(bool isRight)
     if(isRight){
         playermsg = login->playermsg;
         login->close();
+        delete login;
         State = CHOOSEMAP;
         updateState();
     }
@@ -33,23 +34,27 @@ void engine::checkState(bool isRight)
 
 void engine::doLogin()
 {
+    qDebug()<<"isLogin";
     login = new Login(client);
     login->show();
-    qDebug()<<"show now";
 }
 
 bool engine::doConnect()
 {
+    qDebug()<<"show now";
     bar = new progressbar();
     bar->show();
+    qDebug()<<"yes show";
     return true;
 }
 
 void engine::handleState(bool isConnected)
 {
+    qDebug()<<"login";
     if(isConnected){
         State = LOGIN;
         bar->close();
+        delete bar;
     }
     else State = CONNECTERR;
     updateState();

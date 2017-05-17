@@ -11,10 +11,20 @@ handleMsg::handleMsg(BlockingQueue<char*>* sq,BlockingQueue<char*>* rq)
 
 void run(message msg)
 {
+    // 2 byte : posx
+    // 2 byte : posy
+    // 1 byte : dir
+    // 1 byte : index
+    // ? byte : username
     int operation;
     int length;
     int count;
     int loginState;
+    int posx;
+    int posy;
+    int dir;
+    int index;
+    QString username;
     State state;
     std::string username;
     std::string password;
@@ -39,6 +49,9 @@ void run(message msg)
                     printf("operation = 1\n");
                     username = "";
                     password = "";
+                }
+                else if(opeartion == 2){
+                    printf("operation = 2\n");
                 }
             }
             else if(state == Length) {

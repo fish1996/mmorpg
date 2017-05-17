@@ -24,11 +24,9 @@ private:
     connectThread* conThread;
     receiveThread* recvThread;
 
-
+public:
     BlockingQueue<char*>* sendQueue;
     BlockingQueue<char*>* receiveQueue;
-
-public:
     allPlayer* allplayer;
     int clientSocket;
     Client(allPlayer* allplayer);

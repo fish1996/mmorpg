@@ -13,20 +13,11 @@ class handlemsg : public QThread{
     // 1 byte : index
     // ? byte : username
 private:
-    enum State{
-        BEGIN,
-        LENGTH,
-        POSX,
-        POSY,
-        DIR,
-        INDEX,
-        USERNAME,
-    };
     Client* client;
-    State state;
     BlockingQueue<char*>* queue;
 public:
     handlemsg(Client* client);
+protected:
     void run();
 };
 

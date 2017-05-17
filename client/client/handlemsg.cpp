@@ -14,10 +14,9 @@ void handlemsg::run()
     // 1 byte : index
     // ? byte : username
 
-    state = LENGTH;
     QString username;
     for(;;){
-        char* msg = queue->Take();
+        char* msg = client->receiveQueue->Take();
         int ptr = 0;
         while(ptr < strlen(msg)){
             username = "";
@@ -30,7 +29,6 @@ void handlemsg::run()
             for(int i=0;i<p.length-6;i++){
                 username = username + msg[ptr+i+7];
             }
-
             ptr += p.length+1;
             client->allplayer->set.insert(username);
             client->allplayer->map.insert(username,p);

@@ -8,6 +8,7 @@
 #include <QTimer>
 #include <QSet>
 #include <QVector>
+#include "picture.h"
 #include "client.h"
 #include "playerMsg.h"
 
@@ -27,10 +28,10 @@ public :
         FRAMENUM = 3,
     };
     enum direction{
-        Left = 1,
-        Right = 2,
-        Front = 3,
-        Back = 4,
+        Front,
+        Left,
+        Right,
+        Back,
     }dir;
     int index;
     void setMoveX(int*);
@@ -83,6 +84,7 @@ private:
     QPixmap* img[IMGNUM];
     Sprite* sprite;
     Client* client;
+    picture* pic;
     bool pressFlag;
     bool isJump;
     void updateMove(int dir);

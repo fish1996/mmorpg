@@ -149,6 +149,7 @@ void Sprite::moveBack()
 mainWindow::mainWindow(int width,Client* c,playerMsg* msg,QWidget* p)
     :QWidget(p)
 {
+
     playermsg = msg;
     pWidth = width;
     movex = 0;
@@ -177,7 +178,7 @@ char* mainWindow::toChar(QString str)
 
 void mainWindow::sendPlayerMsg()
 {
-    char* msg = new char[10 + playermsg->username.size()];
+    char* msg = new char[9 + playermsg->username.size()];
     char* username = toChar(playermsg->username);
     msg[0] = 10;
     msg[1] = 7 + playermsg->username.size();//length
@@ -186,14 +187,15 @@ void mainWindow::sendPlayerMsg()
     msg[4] = (sprite->posx & 0x00ff) + 1;
     msg[5] = (sprite->posy << 8) + 1;
     msg[6] = (sprite->posy & 0x00ff) + 1;
+    int row = dir + playermsg->index>=4?4:0;
+   // int col =
     msg[7] = sprite->dir;
-    msg[8] = playermsg->index + 1;
     for(int i=0;i<playermsg->username.size();i++){
-        msg[9+i] = username[i];
+        msg[8+i] = username[i];
     }
-    msg[9+playermsg->username.size()] = 0;
+    msg[8+playermsg->username.size()] = 0;
     client->sendMsg(msg);
-     printf("size=%d\n",strlen(msg));
+    printf("size=%d\n",strlen(msg));
 }
 
 void mainWindow::updateJump()
@@ -245,6 +247,7 @@ void mainWindow::loadImg()
     img[6]->load(":/image/Sky.png");
     img[7]->load(":/image/Water.jpg");
     img[8]->load(":/image/Plant2.png");
+    pic = new picture(img[0]);
     sprite->load(img[0]);
     delete img[0];
 }
@@ -267,7 +270,7 @@ void mainWindow::keyPressEvent(QKeyEvent *e)
             Key == Qt::Key_Down){
         key.insert(e->key());
         if(!pressFlag){
-            timer->start(20);
+            timer->start(500);
             pressFlag = true;
         }
         update();
@@ -282,7 +285,6 @@ void mainWindow::keyReleaseEvent(QKeyEvent *e)
         timer->stop();
         update();
     }
- //   QWidget::keyReleaseEvent(event);
 }
 
 void mainWindow::updateMove(int dir)
