@@ -16,10 +16,8 @@ struct playerMsg
 // ? byte : username
 struct player
 {
-    int length;
     int posx;
     int posy;
-    int dir;
     int index;
 };
 

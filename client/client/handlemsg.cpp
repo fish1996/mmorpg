@@ -1,6 +1,7 @@
-#include "handlemsg.h"
+﻿#include "handlemsg.h"
 #include "client.h"
 #include <QSet>
+#include <qDebug>
 handlemsg::handlemsg(Client* c) : client(c)
 {
 }
@@ -16,22 +17,23 @@ void handlemsg::run()
 
     QString username;
     for(;;){
+     //   qDebug()<<"handlemsg";
         char* msg = client->receiveQueue->Take();
-        int ptr = 0;
-        while(ptr < strlen(msg)){
-            username = "";
-            player p;
-            p.length = msg[ptr+0];
-            p.posx = ((msg[ptr+1]-1)<<8) + (msg[ptr+2]-1);
-            p.posy = ((msg[ptr+3]-1)<<8) + (msg[ptr+4]-1);
-            p.dir = msg[ptr+5];
-            p.index = msg[ptr+6]-1;
-            for(int i=0;i<p.length-6;i++){
-                username = username + msg[ptr+i+7];
-            }
-            ptr += p.length+1;
-            client->allplayer->set.insert(username);
-            client->allplayer->map.insert(username,p);
+        username = "";
+        player p;
+
+        p.posx = (((msg[0]&0x00ff)-1)<<8)+ ((msg[1]&0x00ff)-1);
+        p.posy = (((msg[2]&0x00ff)-1)<<8)+ ((msg[3]&0x00ff)-1);
+
+        p.index = msg[4];
+        qDebug()<<"posx="<<p.posx<<"posy="<<p.posy<<"index="<<p.index;
+        for(int i=0;i<strlen(msg)-5;i++){
+            username = username + msg[i+5];
         }
+
+        client->allplayer->set.insert(username);
+        client->allplayer->map.insert(username,p);
+     //   qDebug()<<"strlen="<<strlen(msg)-5<<"username"<< username;
+        delete []msg;
     }
 }

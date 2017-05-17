@@ -26,9 +26,11 @@ function getIPAddress() {
     }
 }
 
+var entry = new Object();
+
 function HashTable() {
     var size = 0;
-    var entry = new Object();
+    
     this.add = function (key, value) {
         if (!this.containsKey(key)) {
             size++;
@@ -81,20 +83,17 @@ javaClient.on('data', function (data) {
     var flag = false;
     var state = 0;
     var length;
-    console.log('send:'+data + ' length = ' + data.length);
-    var time = sd.format(new Date(), 'YYYY-MM-DD HH:mm');
-    fs.appendFile("gateway.js.log",time + ' ');
-    fs.appendFile("gateway.js.log", new Buffer(data).toString('hex'));
+
     for (var i = 0; i < data.length;) {//12
         if (state == 0 && data[i] == 10) {
-            console.log('begin');
+         //   console.log('begin');
             state = 1;
             i++;
         }
         else if (state == 1) {
             state = 2;
             length = data[i];
-            console.log('length='+length);
+          //  console.log('length='+length);
             i++;
         }
         else if (state == 2) {
@@ -118,19 +117,18 @@ javaClient.on('data', function (data) {
             var s = socket.getValue(Id);
             if(s!=null){
                 s.write(msg);
-                console.log('isSend');
+             //   console.log('isSend');
             }
             else{
-                console.log('noSend');
+            //    console.log('noSend');
             }
             flag = true;
         }
     }
     if(flag)return;
-    for (var prop in socket.entry) {
-        if (socket.entry[prop] == value) {
-            return true;
-        }
+    for (var prop in entry) {
+        console.log('send ');
+        entry[prop].write(data);
     }
 })
 
@@ -145,6 +143,7 @@ javaClient.on('error', function (err) {
 
 gatewayServer.on('connection', function (gatewaySocket) {
     id++;
+    var thisid = id;
     var time = sd.format(new Date(), 'YYYY-MM-DD HH:mm');
     fs.appendFile("gateway.js.log", time + ' ' + gatewaySocket.remoteAddress + ':' + gatewaySocket.remotePort + " isconnected\n");
     socket.add(id,gatewaySocket);
@@ -156,19 +155,21 @@ gatewayServer.on('connection', function (gatewaySocket) {
         for(var i=0;i<data.length;i++)msg[i] = data[i];
         msg[data.length-1] = id;
         msg[data.length] = 0x00;
-        console.log('len='+data.length);
-        console.log('id='+ msg[data.length-1]);
+        //console.log('len='+data.length);
+        //console.log('id='+ msg[data.length-1]);
         javaClient.write(msg);
     });
 
     gatewaySocket.on('close', function (data) {
-        var time = sd.format(new Date(), 'YYYY-MM-DD HH:mm');
-        fs.appendFile("gateway.js.log",time + 'The socket with gateway is closed\n');
+          socket.remove(thisid);
+          console.log('user'+thisid+'leave the game');
+     //   var time = sd.format(new Date(), 'YYYY-MM-DD HH:mm');
+     //   fs.appendFile("gateway.js.log",time + 'The socket with gateway is closed\n');
     });
 
     gatewaySocket.on('error', function (err) {
-        var time = sd.format(new Date(), 'YYYY-MM-DD HH:mm');
-        fs.appendFile("gateway.js.log", time + ' ' + err + '\n');
+       // var time = sd.format(new Date(), 'YYYY-MM-DD HH:mm');
+       // fs.appendFile("gateway.js.log", time + ' ' + err + '\n');
         gatewaySocket.destroy();
     });
 });

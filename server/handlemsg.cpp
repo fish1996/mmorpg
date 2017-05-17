@@ -1,4 +1,4 @@
-
+﻿
 #include "handlemsg.h"
 #include <string.h>
 #include <string>
@@ -20,12 +20,9 @@ void run(message msg)
     int length;
     int count;
     int loginState;
-    int posx;
-    int posy;
-    int dir;
-    int index;
-    QString username;
+
     State state;
+    char* usermsg;
     std::string username;
     std::string password;
     printf("is running\n");
@@ -50,8 +47,13 @@ void run(message msg)
                     username = "";
                     password = "";
                 }
-                else if(opeartion == 2){
+                else if(operation == 2){
                     printf("operation = 2\n");
+                    usermsg = new char[length+3];
+                    usermsg[0] = 10;
+                    usermsg[1] = length+1;
+                    usermsg[2] = 22;
+                    count = 3;
                 }
             }
             else if(state == Length) {
@@ -69,7 +71,6 @@ void run(message msg)
                     }
                     else if(i==strlen(data)-1){
                         state = Begin;
-
                         if(username==password) {
                             printf("here ch=%d\n",ch);
                             char* sendData = new char[5];
@@ -98,13 +99,29 @@ void run(message msg)
                     else if(loginState == 1){
                         password = password + ch;
                     }
+                    count++;
+                    break;
+                }
+
+                case 2:{
+                    if(i==strlen(data) - 1) {
+                        usermsg[count] = 0;
+                        for(int i=0;i<=count;i++){
+                            printf("user msg = %d ",usermsg[i]);
+                        }
+                        printf("\n");
+                        state = Begin;
+                        msg.sendQueue->Put(usermsg);
+
+                        continue;
+                    }
+                    usermsg[count++] = ch;
                     break;
                 }
                 }
-                count++;
             }
         }
-        delete data;
+        delete[] data;
     }
 }
 

@@ -20,11 +20,11 @@ private:
     int serverSocket;
 
     bool isConnect;
-    handlemsg* handleThread;
     connectThread* conThread;
     receiveThread* recvThread;
 
 public:
+    handlemsg* handleThread;
     BlockingQueue<char*>* sendQueue;
     BlockingQueue<char*>* receiveQueue;
     allPlayer* allplayer;

@@ -55,16 +55,20 @@ void receiveThread::run()
                 else if(State == DATA) {
                     switch(instruction){
                     case 22:{
-                        //
+                        // 1 byte : length
+                        // 2 byte : posx
+                        // 2 byte : posy
+                        // 1 byte : dir
+                        // 1 byte : index
+                        // ? byte : username
+                        State = START;
+                        char *msg = new char[length-1];
+                        strcpy(msg,buffer+i);
+                        client->receiveQueue->Put(msg);
                         break;
                     }
                     }
 
-                    if(count == length - 1){
-                        State = START;
-                        continue;
-                    }
-                    count++;
                 }
             }
             qDebug()<<"receive";

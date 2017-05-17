@@ -1,12 +1,15 @@
-#include "picture.h"
-
+﻿#include "picture.h"
+#include <qDebug>
 picture::picture(QPixmap* img)
 {
-    int width = img->width();
-    int height = img->height();
-    for(int i=0;i<12;i++){
-        for(int j=0;j<8;j++){
-            image[i*12+j]=img->copy(i*width,j*height,width,height);
+    int width = 1.0*img->width()/12;
+    int height = 1.0*img->height()/8;
+    for(int i=0;i<8;i++){
+        for(int j=0;j<12;j++){
+          //  qDebug()<<i<<j;
+            image[12*i+j] = new QPixmap();
+
+            *image[i*12+j]=img->copy(i*width,j*height,width,height);
         }
     }
 }

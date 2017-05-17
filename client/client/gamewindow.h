@@ -28,10 +28,10 @@ public :
         FRAMENUM = 3,
     };
     enum direction{
-        Front,
-        Left,
-        Right,
-        Back,
+        Front = 0,
+        Left = 1,
+        Right = 2,
+        Back = 3,
     }dir;
     int index;
     void setMoveX(int*);

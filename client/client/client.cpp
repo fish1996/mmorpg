@@ -29,7 +29,7 @@ Client::Client(allPlayer* player):allplayer(player)
     recvThread = new receiveThread(this,receiveQueue);
     handleThread = new handlemsg(this);
     conThread->start();
-    handleThread->start();
+
     isConnect = false;
     connect(conThread,SIGNAL(connectState(bool)),this,SLOT(connectState(bool)));
     connect(recvThread,SIGNAL(checkState(bool)),this,SLOT(checkState(bool)));
@@ -89,14 +89,13 @@ void Client::sendMsg(char* msg)
 bool Client::sendRequest(char* message)
 {
     int r = send(clientSocket, message, strlen(message) + 1, 0);
-    printf("size=%d\n",strlen(message));
     delete[] message;
     if (r == SOCKET_ERROR) {
         qDebug()<<"request failed\n";
         return false;
     }
     else {
-        qDebug()<<"request success\n";
+     //   qDebug()<<"request success\n";
         return true;
     }
 }
