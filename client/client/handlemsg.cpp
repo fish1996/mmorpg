@@ -1,4 +1,9 @@
 #include "handlemsg.h"
+#include "client.h"
+#include <QSet>
+handlemsg::handlemsg(Client* c) : client(c)
+{
+}
 
 void handlemsg::run()
 {
@@ -8,37 +13,27 @@ void handlemsg::run()
     // 1 byte : dir
     // 1 byte : index
     // ? byte : username
-    int length;
-    int posx;
-    int posy;
-    int dir;
-    int index;
-    int count;
-    QString username;
+
     state = LENGTH;
+    QString username;
     for(;;){
         char* msg = queue->Take();
-        for(int i=0;i<strlen(msg);i++) {
-            char ch = msg[i];
-            if(state == LENGTH) {
-                length = ch;
-                count = 0;
-                state = POSX;
+        int ptr = 0;
+        while(ptr < strlen(msg)){
+            username = "";
+            player p;
+            p.length = msg[ptr+0];
+            p.posx = ((msg[ptr+1]-1)<<8) + (msg[ptr+2]-1);
+            p.posy = ((msg[ptr+3]-1)<<8) + (msg[ptr+4]-1);
+            p.dir = msg[ptr+5];
+            p.index = msg[ptr+6]-1;
+            for(int i=0;i<p.length-6;i++){
+                username = username + msg[ptr+i+7];
             }
-            else if(state == POSX){
-                if(count == 0){
-                    posx = ch;
-                }
-                else if(count == 1){
-                    posx = (posx<<8) + ch;
-                    state = POSY;
-                    count = 0;
-                }
-                count++;
-            }
-            else if(state == POSY){
 
-            }
+            ptr += p.length+1;
+            client->allplayer->set.insert(username);
+            client->allplayer->map.insert(username,p);
         }
     }
 }

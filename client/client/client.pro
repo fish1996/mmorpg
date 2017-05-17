@@ -22,8 +22,8 @@ SOURCES += main.cpp\
     object.cpp \
     receiveThread.cpp \
     chooseRole.cpp \
-    sendmessage.cpp \
-    handlemsg.cpp
+    handlemsg.cpp \
+    othersprite.cpp
 
 HEADERS  += login.h \
     client.h \
@@ -37,7 +37,8 @@ HEADERS  += login.h \
     receiveThread.h \
     playerMsg.h \
     chooseRole.h \
-    handlemsg.h
+    handlemsg.h \
+    sprite.h
 
 RESOURCES += \
     img.qrc

@@ -5,7 +5,7 @@
 #include <qDebug>
 #include<fstream>
 #pragma comment(lib,"ws2_32.lib")
-Client::Client()
+Client::Client(allPlayer* player):allplayer(player)
 {
     WORD wVersionRequested;
     WSADATA wsaData;
@@ -27,8 +27,9 @@ Client::Client()
     receiveQueue = new BlockingQueue<char*>();
     conThread = new connectThread(this,sendQueue);
     recvThread = new receiveThread(this,receiveQueue);
+    handleThread = new handlemsg(this);
     conThread->start();
-
+    handleThread->start();
     isConnect = false;
     connect(conThread,SIGNAL(connectState(bool)),this,SLOT(connectState(bool)));
     connect(recvThread,SIGNAL(checkState(bool)),this,SLOT(checkState(bool)));
@@ -36,9 +37,12 @@ Client::Client()
 
 void Client::connectState(bool is)
 {
+
     if(is){
+        qDebug()<<"success";
          recvThread->start();
     }
+     qDebug()<<"no success";
     emit(connected(is));
 }
 
@@ -85,6 +89,7 @@ void Client::sendMsg(char* msg)
 bool Client::sendRequest(char* message)
 {
     int r = send(clientSocket, message, strlen(message) + 1, 0);
+    printf("size=%d\n",strlen(message));
     delete[] message;
     if (r == SOCKET_ERROR) {
         qDebug()<<"request failed\n";

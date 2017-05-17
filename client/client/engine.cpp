@@ -6,7 +6,8 @@
 #include <qDebug>
 engine::engine()
 {
-    client = new Client();
+    allplayer = new allPlayer();
+    client = new Client(allplayer);
     connect(client,SIGNAL(connected(bool)),this,SLOT(handleState(bool)));
     connect(client,SIGNAL(checked(bool)),this,SLOT(checkState(bool)));
 }
@@ -34,6 +35,7 @@ void engine::doLogin()
 {
     login = new Login(client);
     login->show();
+    qDebug()<<"show now";
 }
 
 bool engine::doConnect()

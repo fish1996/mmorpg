@@ -6,7 +6,7 @@
 #include <QGLWidget>
 #include <QPixmap>
 #include <QTimer>
-#include <QMap>
+#include <QSet>
 #include <QVector>
 #include "client.h"
 #include "playerMsg.h"
@@ -27,10 +27,10 @@ public :
         FRAMENUM = 3,
     };
     enum direction{
-        Left,
-        Right,
-        Front,
-        Back,
+        Left = 1,
+        Right = 2,
+        Front = 3,
+        Back = 4,
     }dir;
     int index;
     void setMoveX(int*);
@@ -82,7 +82,6 @@ private:
     int pWidth;
     QPixmap* img[IMGNUM];
     Sprite* sprite;
-    QMap<QString,Sprite*>map;
     Client* client;
     bool pressFlag;
     bool isJump;

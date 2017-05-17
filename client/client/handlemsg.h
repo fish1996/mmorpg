@@ -2,6 +2,8 @@
 #define HANDLEMSG_H
 #include <QThread>
 #include "blockingQueue.h"
+#include "playerMsg.h"
+class Client;
 class handlemsg : public QThread{
     Q_OBJECT
     // 1 byte : length
@@ -20,9 +22,11 @@ private:
         INDEX,
         USERNAME,
     };
+    Client* client;
     State state;
     BlockingQueue<char*>* queue;
 public:
+    handlemsg(Client* client);
     void run();
 };
 

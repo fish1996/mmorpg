@@ -1,4 +1,4 @@
-﻿#include "object.h"
+﻿/*#include "object.h"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -19,4 +19,4 @@ void Object::draw()
 	glTranslatef(center_x - radius / 2, radius / 2, center_y - radius / 2);
 	glutSolidCube(radius);
 	glPopMatrix();
-}
+}*/

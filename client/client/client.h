@@ -5,6 +5,8 @@
 #include "BlockingQueue.h"
 #include "connectThread.h"
 #include "receiveThread.h"
+#include "handlemsg.h"
+#include "playerMsg.h"
 class Client : public QObject
 {
     Q_OBJECT
@@ -18,14 +20,18 @@ private:
     int serverSocket;
 
     bool isConnect;
+    handlemsg* handleThread;
     connectThread* conThread;
     receiveThread* recvThread;
+
+
     BlockingQueue<char*>* sendQueue;
     BlockingQueue<char*>* receiveQueue;
 
 public:
+    allPlayer* allplayer;
     int clientSocket;
-    Client();
+    Client(allPlayer* allplayer);
     ~Client();
     void sendMsg(char* msg);
     bool sendRequest(char* instruction);

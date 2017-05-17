@@ -52,7 +52,7 @@ char* Login::toChar(QString str)
 void Login::doLogin()
 {
     int count = 3;
-    int len = userNameLine->text().size() + passwordLine->text().size()+ count + 1;
+    int len = userNameLine->text().size() + passwordLine->text().size()+ count + 2;
     char* username = toChar(userNameLine->text());
     char* password = toChar(passwordLine->text());
     playermsg->username = userNameLine->text();
@@ -68,10 +68,8 @@ void Login::doLogin()
     for(int i=0;i<passwordLine->text().size();i++){
         msg[count++] = password[i];
     }
-   // msg[count] = 0;
-//    printf("msg = %s password = %s name = %s\n",msg,password,username);
+    msg[count] = 0;
     client->sendMsg(msg);
-   // delete[] msg;
  }
 
 Login::~Login()
