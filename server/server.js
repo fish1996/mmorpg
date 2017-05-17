@@ -6,9 +6,9 @@ var javaPort = 12345;
 var host = getIPAddress();
 var gatewayServer = net.createServer().listen(gatePort, '120.25.227.72');
 var javaClient = net.createConnection(javaPort, host);
-var socket = HashTable;
+var socket = new HashTable;
 var flag = false;
-var id = 0;
+var id = 0x00;
 
 fs.appendFile("gateway.js.log", host);
 
@@ -115,7 +115,7 @@ javaClient.on('data', function (data) {
             var msg = data.slice(0, i);
             i++;
             state = 0;
-            var s = socket.getValues(Id);
+            var s = socket.getValue(Id);
             if(s!=null){
                 s.write(msg);
                 console.log('isSend');
@@ -148,14 +148,16 @@ gatewayServer.on('connection', function (gatewaySocket) {
     var time = sd.format(new Date(), 'YYYY-MM-DD HH:mm');
     fs.appendFile("gateway.js.log", time + ' ' + gatewaySocket.remoteAddress + ':' + gatewaySocket.remotePort + " isconnected\n");
     socket.add(id,gatewaySocket);
-    
+
     gatewaySocket.on('data', function (data) {
         var time = sd.format(new Date(), 'YYYY-MM-DD HH:mm');
         fs.appendFile("gateway.js.log", time + 'receive\n');
         var msg = new Buffer(data.length+1);
         for(var i=0;i<data.length;i++)msg[i] = data[i];
-        msg[data.length] = id;
-        console.log('id='+ msg[data.length]);
+        msg[data.length-1] = id;
+        msg[data.length] = 0x00;
+        console.log('len='+data.length);
+        console.log('id='+ msg[data.length-1]);
         javaClient.write(msg);
     });
 
