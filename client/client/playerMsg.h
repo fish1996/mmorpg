@@ -8,23 +8,45 @@ struct playerMsg
     QString username;
     int index;
 };
-// 1 byte : length
-// 2 byte : posx
-// 2 byte : posy
-// 1 byte : dir
-// 1 byte : index
-// ? byte : username
-struct player
+
+struct Player
 {
     int posx;
     int posy;
     int index;
 };
 
-struct allPlayer
+class PlayerQueue
 {
-    QSet<QString> set;
-    QMap<QString,player> map;
+public:
+    int front,back;
+    int time;
+    Player* player1;
+    Player* player2;
+    enum{
+        MAX = 6,
+        TMAX = 40,
+    };
+    inline PlayerQueue() {
+        front = back = 0;
+        time = 0;
+    }
+    Player* player[MAX];
+    inline void push(Player* p) {
+        front = (front + 1)%MAX;
+        player[front] = p;
+    }
+    inline Player* pop(){
+        if(front == back)return nullptr;
+        back = (back + 1)%MAX;
+        return player[back];
+    }
+};
+
+struct AllPlayer
+{
+    QMap<QString,PlayerQueue> map;
+    void add(QString,Player*);
 };
 
 #endif // PLAYERMSG_H

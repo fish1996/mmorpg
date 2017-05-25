@@ -28,9 +28,10 @@ public:
     handlemsg* handleThread;
     BlockingQueue<char*>* sendQueue;
     BlockingQueue<char*>* receiveQueue;
-    allPlayer* allplayer;
+
+    AllPlayer* allPlayer;
     int clientSocket;
-    Client(allPlayer* allplayer);
+    Client(AllPlayer* player);
     ~Client();
     void sendMsg(char* msg);
     bool sendRequest(char* instruction);

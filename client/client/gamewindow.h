@@ -74,12 +74,15 @@ private:
         HEIGHT = 800,
         IMGNUM = 10,
         NUM = 1,
+        TMAX = 40,
     };
+    int max;
     QSet<int>key;
     QTimer* timer;
     QTimer* jumpTimer;
     QTimer* sender;
     playerMsg* playermsg;
+    //PlayerQueue* playerQueue;
     int pWidth;
     QPixmap* img[IMGNUM];
     Sprite* sprite;
@@ -90,6 +93,10 @@ private:
     void updateMove(int dir);
     char* toChar(QString str);
     QByteArray* ba;
+    AllPlayer* allPlayer;
+    Player* player1;
+    Player* player2;
+    int time;
 public:
     void paintEvent(QPaintEvent *);
     void keyPressEvent(QKeyEvent *);

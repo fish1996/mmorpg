@@ -5,7 +5,7 @@
 #include <qDebug>
 #include<fstream>
 #pragma comment(lib,"ws2_32.lib")
-Client::Client(allPlayer* player):allplayer(player)
+Client::Client(AllPlayer* player):allPlayer(player)
 {
     WORD wVersionRequested;
     WSADATA wsaData;

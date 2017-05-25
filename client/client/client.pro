@@ -23,7 +23,8 @@ SOURCES += main.cpp\
     receiveThread.cpp \
     chooseRole.cpp \
     handlemsg.cpp \
-    picture.cpp
+    picture.cpp \
+    playerMsg.cpp
 
 HEADERS  += login.h \
     client.h \

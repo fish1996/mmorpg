@@ -149,25 +149,27 @@ void Sprite::moveBack()
 mainWindow::mainWindow(int width,Client* c,playerMsg* msg,QWidget* p)
     :QWidget(p)
 {
-
+    player1 = nullptr;
+    player2 = nullptr;
     playermsg = msg;
     pWidth = width;
     movex = 0;
     client = c;
-
+    allPlayer = client->allPlayer;
     resize(WIDTH,HEIGHT);
     pressFlag = false;
     isJump = false;
     timer = new QTimer();
     jumpTimer = new QTimer();
     sender = new QTimer();
+
     connect(timer,SIGNAL(timeout()),this,SLOT(updateState()));
     connect(jumpTimer,SIGNAL(timeout()),this,SLOT(updateJump()));
     connect(sender,SIGNAL(timeout()),this,SLOT(sendPlayerMsg()));
-    sender->start(300);
-    qDebug()<<"before load";
+    sender->start(1000);
+  //  qDebug()<<"before load";
     loadImg();
-    qDebug()<<"after load";
+ //   qDebug()<<"after load";
 }
 
 char* mainWindow::toChar(QString str)
@@ -208,7 +210,7 @@ void mainWindow::sendPlayerMsg()
         col += sprite->backindex%3;
         break;
     }
-    //qDebug()<<"posx="<<sprite->posx<<"posy="<<sprite->posy<<"before";
+
     msg[7] = 12*row + col + 1;
     for(int i=0;i<playermsg->username.size();i++){
         msg[8+i] = username[i];
@@ -291,7 +293,7 @@ void mainWindow::keyPressEvent(QKeyEvent *e)
             Key == Qt::Key_Down){
         key.insert(e->key());
         if(!pressFlag){
-            timer->start(30);
+            timer->start(40);
             pressFlag = true;
         }
         update();
@@ -352,6 +354,23 @@ void mainWindow::paintEvent(QPaintEvent *e)
     paint.drawText(1.0*sprite->posx,1.0*sprite->posy - 15,playermsg->username);
     paint.drawPixmap(1.0*sprite->posx,1.0*sprite->posy,50,50,*sprite->cur);
     paint.drawPixmap(30,HEIGHT-300,200,200,*img[8]);
+
+
+    QMap<QString,PlayerQueue>::iterator it;
+    for(it=client->allPlayer->map.begin();it!=client->allPlayer->map.end();it++){
+        //player1 =
+        if(it->time==PlayerQueue::TMAX + 1) {
+            it->time = 0;
+        }
+        paint.drawPixmap(it->posx,it->posy,50,50,*(pic->image[it->index]));
+        paint.drawText(it->posx,it->posy-15,*it);
+        it->time++;
+    }
+     /*
+    AllPlayer* allPlayer1 = playerQueue->pop();
+    AllPlayer* allPlayer2 = playerQueue->pop();
+    if(allPlayer1)
+
     QSet<QString>::iterator it;
     for(it=client->allplayer->set.begin();it!=client->allplayer->set.end();it++){
         qDebug()<<"draw"<<*it;
@@ -361,8 +380,8 @@ void mainWindow::paintEvent(QPaintEvent *e)
              paint.drawPixmap((*itr).posx,(*itr).posy,50,50,*(pic->image[(*itr).index]));
              paint.drawText((*itr).posx,(*itr).posy-15,*it);
         }
-
     }
+    */
 }
 
 GameWindow::GameWindow(Client* client,playerMsg* msg,QWidget* parent)

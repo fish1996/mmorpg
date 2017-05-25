@@ -25,7 +25,7 @@ private:
     GameWindow* gameWindow;
     Login* login;
     playerMsg* playermsg;
-    allPlayer* allplayer;
+    AllPlayer* allPlayer;
 
     bool doConnect();
     void doLogin();

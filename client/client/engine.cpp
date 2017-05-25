@@ -6,8 +6,8 @@
 #include <qDebug>
 engine::engine()
 {
-    allplayer = new allPlayer();
-    client = new Client(allplayer);
+    allPlayer = new AllPlayer();
+    client = new Client(allPlayer);
     connect(client,SIGNAL(connected(bool)),this,SLOT(handleState(bool)));
     connect(client,SIGNAL(checked(bool)),this,SLOT(checkState(bool)));
 }
